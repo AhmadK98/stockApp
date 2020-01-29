@@ -1,9 +1,8 @@
 
-const cheerio = require('cheerio')
 const fetch = require('node-fetch')
 const express = require('express');
-const { pool } = require('./ServerSide/pool')
-const apiGetters = require('./apiGetters')
+const { pool } = require('./pool')
+const apiGetters = require('../apiGetters')
 
 
 const pgQuery = async (query, params) => {
@@ -111,3 +110,5 @@ const updateAll = async () => {
 // wtdAPI(['aapl','twtr','vusa.l','jd.l','ocdo.l'])
 // updateAll()
 
+
+module.exports.getCurrentValue = getCurrentValue

@@ -1,32 +1,32 @@
 const fetch = require('node-fetch');
-const cheerio = require('cheerio')
+// const cheerio = require('cheerio')
 
 
 //scrapes live price from marketwatch, not very good, only seems to work a few times before it gets blocked
-async function webScrape(ticker, fund, country) {
-    //https://cors-anywhere.herokuapp.com/
-    let link = ''
-    if (typeof fund === 'undefined' && typeof country === 'undefined') {
-        link = link.concat(`https://www.marketwatch.com/investing/stock/${ticker}`)
-    }
-    else if (typeof fund !== 'undefined' && typeof country === 'undefined') {
-        link = `https://www.marketwatch.com/investing/fund/${ticker}`
-    }
-    else if (typeof fund === 'undefined' && typeof country !== 'undefined') {
-        link = `https://www.marketwatch.com/investing/stock/${ticker}?countrycode=${country}`
-    }
-    else {
-        link = `https://www.marketwatch.com/investing/fund/${ticker}?countrycode=${country}`
-    }
+// async function webScrape(ticker, fund, country) {
+//     //https://cors-anywhere.herokuapp.com/
+//     let link = ''
+//     if (typeof fund === 'undefined' && typeof country === 'undefined') {
+//         link = link.concat(`https://www.marketwatch.com/investing/stock/${ticker}`)
+//     }
+//     else if (typeof fund !== 'undefined' && typeof country === 'undefined') {
+//         link = `https://www.marketwatch.com/investing/fund/${ticker}`
+//     }
+//     else if (typeof fund === 'undefined' && typeof country !== 'undefined') {
+//         link = `https://www.marketwatch.com/investing/stock/${ticker}?countrycode=${country}`
+//     }
+//     else {
+//         link = `https://www.marketwatch.com/investing/fund/${ticker}?countrycode=${country}`
+//     }
 
 
-    let res = await fetch(link)
-    let $ = cheerio.load(await res.text())
-    cont = await $('.value').html()
+//     let res = await fetch(link)
+//     let $ = cheerio.load(await res.text())
+//     cont = await $('.value').html()
 
-    return (cont)
+//     return (cont)
 
-}
+// }
 
 //gets stock from IEX, only supports US stocks
 const getIexStock = async (ticker) => {
@@ -86,4 +86,4 @@ const forex = async (base, convertTo) => {
 module.exports.forex = forex
 module.exports.wtdAPI = wtdAPI
 module.exports.getIexStock = getIexStock
-module.exports.mkWatch = webScrape
+// module.exports.mkWatch = webScrape

@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-// const stockRoute = require('./Routes/stockRounpte')
+const stockRoute = require('./backend/routes/stockRoute')
 require('dotenv').config()
 
 

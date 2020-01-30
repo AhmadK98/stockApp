@@ -161,3 +161,10 @@ module.exports.getCurrentValue = getCurrentValue
 // WHERE id = 1) AS q (id, data)
 // JOIN jsonb_each_text(q.data) d ON TRUE) as keyvalue
 // JOIN stocks ON stocks.ticker=keyvalue.key) AS g
+
+//next steps:
+
+//cookies
+//forex
+//total vlaue
+//frontend!!!

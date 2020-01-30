@@ -60,7 +60,7 @@ const wtdAPI = async (tickers) => {//add in country detect with .l for example
 
     }
 }
-// wtdAPI(['aapl', 'twtr', 'vusa.l', 'jd.l', 'ocdo.l']).then(data => console.log(data))
+// wtdAPI(['vusa.l']).then(data => console.log(data))
 
 const forex = async (base, convertTo) => {
     let link

@@ -6,10 +6,11 @@ router.get('/:stock', (req, res) => {
     let includeTime = req.query.includeTime ? true : null
     stockHandler.getCurrentValue(req.params.stock, includeTime)
         .then(data => res.json(data))
-        .catch(err => res.json('g'))
+        .catch(err => res.json('Could not retrieve data'))
 
 })
 
+stockHandler.getCurrentValue('aapl').then(res => console.log(res))
 
 
 module.exports = router

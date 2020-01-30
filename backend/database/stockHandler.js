@@ -11,9 +11,10 @@ const pgQuery = async (query, params) => {
         const res = await pool.query(query, params)
         return res
     } catch (err) {
-        console.log(err)
+        return err
     }
 }
+// pgQuery('SELECT * FROM g').then(res => console.log(res))
 
 // pgQuery(`SELECT time_series FROM (
 //     SELECT jsonb_array_elements(data)AS "time_series" , id
@@ -67,7 +68,13 @@ const updateStock = async (ticker, country) => { //add in aftermarket hours supp
                                 SET price = ${await receivedPrice}, data = ${dataValue}
                                 WHERE ticker = '${ticker}'`) //add in response if price returns null values
     } catch (err) {
-        console.log(err)
+        
+        if (err.errno == 'ECONNREFUSED'){
+            return `Can't connect` //change this!!
+        }else{
+            return err
+        }
+        
     }
 }
 
@@ -81,7 +88,7 @@ const getCurrentValue = async (ticker, includeTime) => {  // gets latest object 
         let response = await pgQuery(`SELECT time_series FROM (
             SELECT jsonb_array_elements(data)AS "time_series" , ticker
             FROM stocks
-            WHERE ticker = '${ticker}' AND data IS NOT NULL) 
+            WHERE ticker = upper('${ticker}') AND data IS NOT NULL) 
             AS "unnested"`
             // WHERE (time_series->> 'time')::timestamp < current_timestamp;
         )
@@ -90,18 +97,24 @@ const getCurrentValue = async (ticker, includeTime) => {  // gets latest object 
         try {
             data = await response.rows.slice(-1)[0].time_series
         } catch {
-            data = response.rowCount > 0 ? response : 'Could not find stock'
+            data = response
         }
-
 
         if (typeof data.price == 'number' && includeTime) {
             return data
         } else if (typeof data.price == 'number') {
             return data.price
         } else {
-            return data
+            throw data
         }
-    } catch (err) { console.log(err) }
+    
+    } catch (err) { 
+        
+        if (err.errno !== undefined && (err.errno === 'ECONNREFUSED' || err.errno === 'ENOTFOUND')){
+            return `Can't connect to database`
+        }else{
+            return `Can't find stock`
+        }}
 }
 
 const updateAll = async () => {

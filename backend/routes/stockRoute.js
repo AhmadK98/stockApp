@@ -2,8 +2,12 @@ const express = require('express')
 const router = express.Router()
 const stockHandler = require('../database/stockHandler')
 
-router.get('/', (req, res) => {
-    stockHandler.getCurrentValue('tsla').then(data => res.json(data))
+router.get('/:stock', (req, res) => {
+    let includeTime = req.query.includeTime ? true : null
+    stockHandler.getCurrentValue(req.params.stock, includeTime)
+        .then(data => res.json(data))
+        .catch(err => res.json('g'))
+
 })
 
 

@@ -35,6 +35,7 @@ const getIexStock = async (ticker) => {
     try {
         let response = await fetch(apiLink)
         data = await (response.json())
+
         return data.latestPrice
     } catch (err) {
         console.log(err.message)
@@ -52,19 +53,14 @@ const wtdAPI = async (tickers) => {//add in country detect with .l for example
         try {
             res = await fetch(link)
             apiData = await res.json()
-            apiData.data.forEach(element => {
-                if (element.currency == 'GBX') {
-                    console.log(element.price / 100) //only console logs for now
-                } else {
-                    console.log(element.price)
-                }
-            })
+            return apiData.data
         } catch (err) {
             console.log(err)
         }
 
     }
 }
+// wtdAPI(['aapl', 'twtr', 'vusa.l', 'jd.l', 'ocdo.l']).then(data => console.log(data))
 
 const forex = async (base, convertTo) => {
     let link

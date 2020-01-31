@@ -62,10 +62,11 @@ const getUser = async (username, email, password) => {
 
 // .then(data => console.log(data.rows))
 const assignStock = async (user, ticker, quantity) => {
+    params = [user, ticker, quantity]
     try {
         const res = await pool.query(`UPDATE users
-                                SET stocks_owned = stocks_owned || jsonb_build_object('${ticker}',${quantity})
-                                WHERE id = ${user}`
+                                SET stocks_owned = stocks_owned || jsonb_build_object($2::text,$3::numeric)
+                                WHERE id = $1`, params
         )
     } catch (err) {
         console.log(err)
@@ -73,10 +74,11 @@ const assignStock = async (user, ticker, quantity) => {
 }
 // assignStock(1,'aapl',4)
 const removeStock = async (user, ticker) => {
+    params = [user, ticker]
     try {
         const res = await pool.query(`UPDATE users
-                                SET stocks_owned = stocks_owned - '${ticker}'
-                                WHERE id = ${user}`)
+                                SET stocks_owned = stocks_owned - $2::numeric
+                                WHERE id = $1`)
     } catch (err) {
         console.log(err)
     }

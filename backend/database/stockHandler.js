@@ -142,13 +142,14 @@ const getCurrentValue = async (ticker, includeTime) => {  // gets latest object 
             SELECT jsonb_array_elements(data)AS "time_series" , ticker
             FROM stocks
             WHERE ticker = upper('${ticker}') AND data IS NOT NULL) 
-            AS "unnested"`
-            // WHERE (time_series->> 'time')::timestamp < current_timestamp;
+            AS "unnested"
+            WHERE (time_series->> 'time')::timestamp > current_timestamp`
         )
 
         let data
         try {
-            data = await response.rows.slice(-1)[0].time_series
+            // data = await response.rows.slice(-1)[0].time_series
+            data = await response.rows
         } catch {
             data = response
         }
@@ -158,7 +159,7 @@ const getCurrentValue = async (ticker, includeTime) => {  // gets latest object 
         } else if (typeof data.price == 'number') {
             return data.price
         } else {
-            throw data
+            return data //throw
         }
 
     } catch (err) {
@@ -208,7 +209,8 @@ const updateAllWtd = async () => {//updates prices of all stocks
 }
 
 
-updateAllWtd()
+
+getCurrentValue('VUSA.L').then(data =>console.log(data))
 
 
 

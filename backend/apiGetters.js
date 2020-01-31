@@ -42,24 +42,50 @@ const getIexStock = async (ticker) => {
     }
 }
 
-const wtdAPI = async (tickers) => {//add in country detect with .l for example
+const wtdApi = async (tickers) => {
     const numLoops = tickers.length / 5
     const remainder = tickers.length % 5
-
+    const links = []
     apiKey = 'UsQhjjiFOodsCYt8eWSmRqY7qquA9yqlH2A9uhqv1UvotS00D6AqSeBg8VVf'
     for (i = 0; i < numLoops; i++) {
         let tickersFive = (tickers.slice(i * 5, i * 5 + 5))
         link = `https://api.worldtradingdata.com/api/v1/stock?symbol=${tickersFive.toString()}&api_token=${apiKey}`
-        try {
-            res = await fetch(link)
-            apiData = await res.json()
-            return apiData.data
-        } catch (err) {
-            console.log(err)
-        }
-
+        links.push(link)
+    }
+    try {
+        res = await fetch(link)
+        apiData = await res.json()
+        return apiData.data
+    } catch (err) {
+        console.log(err)
     }
 }
+
+const wtdApiCreateLinks = (tickers) => {
+    const numLoops = tickers.length / 5
+    const remainder = tickers.length % 5
+    const links = []
+    apiKey = 'UsQhjjiFOodsCYt8eWSmRqY7qquA9yqlH2A9uhqv1UvotS00D6AqSeBg8VVf'
+    for (i = 0; i < numLoops; i++) {
+        let tickersFive = (tickers.slice(i * 5, i * 5 + 5))
+        link = `https://api.worldtradingdata.com/api/v1/stock?symbol=${tickersFive.toString()}&api_token=${apiKey}`
+        links.push(link)
+    }
+    return links
+}
+const wtdApiUseLinks = async (link) => {
+    try {
+        res = await fetch(link)
+        apiData = await res.json()
+        return apiData.data
+    } catch (err) {
+        console.log(err)
+    }
+}
+// wtdApiUseLinks('https://api.worldtradingdata.com/api/v1/stock?symbol=TSLA&api_token=UsQhjjiFOodsCYt8eWSmRqY7qquA9yqlH2A9uhqv1UvotS00D6AqSeBg8VVf')
+//     .then(data => console.log(data))
+// a = wtdApiLinks(['TSLA', 'GOOGL', 'AAPL', 'MSFT', 'PYPL', 'AMD', 'DIS', 'JD.L', 'SNAP', 'SXX.L', 'A'])
+
 // wtdAPI(['vusa.l']).then(data => console.log(data))
 
 const forex = async (base, convertTo) => {
@@ -80,6 +106,9 @@ const forex = async (base, convertTo) => {
 
 
 module.exports.forex = forex
-module.exports.wtdAPI = wtdAPI
+
+module.exports.wtdApi = wtdApi
 module.exports.getIexStock = getIexStock
+module.exports.wtdApiCreateLinks = wtdApiCreateLinks
+module.exports.wtdApiUseLinks = wtdApiUseLinks
 // module.exports.mkWatch = webScrape

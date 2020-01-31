@@ -82,12 +82,9 @@ const removeStock = async (user, ticker) => {
     }
 }
 
-const getTotalStocks = async (user) => {
 
-}
 
 
 module.exports.addUser = addUser
-module.exports.assignStock = assignStock
-module.exports.removeStock = removeStock
+
 module.exports.getUser = getUser

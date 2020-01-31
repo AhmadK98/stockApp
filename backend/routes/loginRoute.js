@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
-const userHandler = require('../database/userHandler')
+const userHandler = require('../database/userAccountHandler')
 const { pool } = require('../database/pool')
 
 const validateEmail = (email) => {

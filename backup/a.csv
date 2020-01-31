@@ -1,0 +1,7 @@
+GOOGL,Google,USA,"[{'"time'": '"2020-01-30 00:07:04'", '"price'": 1456.70}]",stock,1456.70,USD
+MSFT,Microsoft,USA,"[{'"time'": '"2020-01-30 00:04:57'", '"price'": 168.04}, {'"time'": '"2020-01-30 00:07:04'", '"price'": 168.04}]",stock,168.04,USD
+VUSA.L,VANGUARD/SHS USD,UK,"[{'"time'": '"2020-01-30 16:17:45'", '"price'": 47.06}]",stock,47.06,GBP
+TWTR,Twitter,USA,"[{'"time'": '"2020-01-30 00:16:55'", '"price'": 33.63}]",stock,33.63,USD
+JD,"JD.com, Inc.",UK,"[{'"time'": '"2020-01-30 22:13:10'", '"price'": 38.49}]",stock,38.49,USD
+AAPL,Apple,USA,"[{'"time'": '"2020-01-30 00:07:03'", '"price'": 324.34}]",stock,324.34,USD
+TSLA,Tesla,USA,"[{'"time'": '"2020-01-30 00:07:04'", '"price'": 580.99}]",stock,580.99,USD

@@ -10,7 +10,7 @@ router.get('/:stock', (req, res) => {
 
 })
 
-stockHandler.getCurrentValue('aapl').then(res => console.log(res))
+
 
 
 module.exports = router

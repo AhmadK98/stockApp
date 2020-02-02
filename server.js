@@ -27,9 +27,9 @@ app.get('/', (req, res) => {
     res.send('hiv')
 })
 
-
+console.log('test')
 if (process.env.NODE_ENV ==='production'){
-    
+    console.log('madeit')
     app.use(express.static('client/build'))
     app.get('*',(req,res)=>{
         // res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))

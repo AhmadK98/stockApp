@@ -10,7 +10,7 @@ function StockGetter() {
   return (
     <div className="App">
       <header className="App-header">
-        HI
+        HIkk
       </header>
     </div>
   );

@@ -23,9 +23,9 @@ app.use('/stocks', stockRoute)
 app.use('/users', loginRoute)
 
 
-app.get('/', (req, res) => {
-    res.send('hiv')
-})
+// app.get('/', (req, res) => {
+//     res.send('hiv')
+// })
 
 console.log('test')
 if (process.env.NODE_ENV ==='production'){

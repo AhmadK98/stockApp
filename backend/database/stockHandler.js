@@ -253,7 +253,7 @@ const getOneHistoricValue = async (ticker, includeTime, from, to) => {  // gets 
     }
 }
 
-getTodaysValue('SXX.L', true).then(date => console.log(date[0]))
+// getTodaysValue('SXX.L', true).then(date => console.log(date[0]))
 
 const getCurrentValue = async (ticker, includeTime) => {  // gets latest object in db with matching ticker, use includeTime to include s
     try {

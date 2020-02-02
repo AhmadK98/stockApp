@@ -33,56 +33,37 @@ const addUser = async (username, password, email) => {
     }
 }
 
-const getUser = async (username, email, password) => {
+const getUser = async (user, password) => {
     let userData
+    let params = [user]
     try {
-        if (username) {
-            userData = await pool.query(`SELECT * FROM users where username = '${username}'`)
-        } else if (email) {
-            userData = await pool.query(`SELECT * FROM users where email = '${email}'`)
+        if (!user.match(/[!@|[€£:;><§}{~ `'"#\$%\?\^\&*\)\(+=._-]/g)) {
+            userData = await pool.query(`SELECT * FROM users where username = $1`, params)
+        } else {
+            userData = await pool.query(`SELECT * FROM users where email = $1`, params)
         }
         if (userData.rowCount == 0) {
-            return 'Email or Password is incorrect, please try again'
+            throw 'Username/Email or Password is incorrect, please try again'
         }
 
         const verifyPassword = await bcrypt.compare(password, await userData.rows[0].password)
         if (verifyPassword) {
+            
             await updateLastLoggedIn(userData.rows[0].id)
-            return { userdata: userData.rows[0], login: 'Logged in!' }
+            
+            return { userdata: userData.rows[0], login: true }
 
         } else {
-            return 'Email or Password is incorrect, please try again'
+            throw 'Username/Email or Password is incorrect, please try again'
         }
     } catch (err) {
-        console.log(err)
+        return err
     }
 }
 
 
 
-// .then(data => console.log(data.rows))
-const assignStock = async (user, ticker, quantity) => {
-    params = [user, ticker, quantity]
-    try {
-        const res = await pool.query(`UPDATE users
-                                SET stocks_owned = stocks_owned || jsonb_build_object($2::text,$3::numeric)
-                                WHERE id = $1`, params
-        )
-    } catch (err) {
-        console.log(err)
-    }
-}
-// assignStock(1,'aapl',4)
-const removeStock = async (user, ticker) => {
-    params = [user, ticker]
-    try {
-        const res = await pool.query(`UPDATE users
-                                SET stocks_owned = stocks_owned - $2::numeric
-                                WHERE id = $1`)
-    } catch (err) {
-        console.log(err)
-    }
-}
+
 
 
 

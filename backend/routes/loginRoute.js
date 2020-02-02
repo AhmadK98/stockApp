@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const userHandler = require('../database/userAccountHandler')
+const isLoggedIn = require('../isLoggedIn')
 const { pool } = require('../database/pool')
 
 const validateEmail = (email) => {
@@ -11,6 +12,12 @@ const validateEmail = (email) => {
         && email.search(' ') == -1
         && email.split('@').length == 2
     return validEmail
+}
+
+const validateUser = (user) => {
+    const validUser = typeof user.trim() == 'string'
+        && !user.match(/[!@|[€£:;><§}{~ `'"#\$%\?\^\&*\)\(+=._-]/g)
+    return validUser
 }
 
 const validatePassword = (password) => {
@@ -29,13 +36,13 @@ const hashPass = async (password) => {
 
 
 router.get('/', (req, res) => {
-    res.send('hi')
+    res.json('hi')
 })
 
 
 
 router.post('/signup', async (req, res) => {
-    if (validateEmail(req.body.email) && validatePassword(req.body.password)) {
+    if (validateEmail(req.body.email) && validatePassword(req.body.password) && validateUser(req.body.user)) {
 
         hashedPass = await hashPass(req.body.password)
 
@@ -54,8 +61,31 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    userHandler.getUser(null, req.body.email, req.body.password)
-        .then((data) => res.json(data.login || data))
+    
+    userHandler.getUser(req.body.user, req.body.password)
+        .then((data) => {
+            
+            if (data.login) {
+            res.cookie('user', data.userdata.id, {
+                httpOnly:true,
+                signed:true     
+            })
+            res.json(data)
+        }else{
+            res.json(data)
+        }
+
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        
+})
+
+router.get('/loggedIn', isLoggedIn, (req,res) => {
+    console.log('g')
+    res.json(JSON.stringify(true))
+    
 })
 //login with details and credentials / cookies
 // bcrypt.compare('asdadsaf4', '$2b$10$fUem5kCqmxu0cr1d3lqLj.3eMIiS47C5TR/bC2WN6/uqVxdazOrTq', function(err, res) {

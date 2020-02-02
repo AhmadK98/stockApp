@@ -1,3 +1,7 @@
-const a = new Date(Date.now())
-a.setHours(0,0,0,0).toISOString()
-console.log(a)
+const validateUser = (user) => {
+    const validUser = typeof user.trim() == 'string'
+        && !user.match(/[!@|[€£:;><§}{~ `'"#\$%\?\^\&*\)\(+=._-]/g)
+    return validUser
+}
+
+console.log(validateUser('gasfcsdvAx'))

@@ -16,7 +16,7 @@ const portfolioValue = async (id, currency) => {
     return value.rows[0].total
 }
 
-portfolioValue(1, 'GBP').then(result => console.log(result))
+// portfolioValue(1, 'GBP').then(result => console.log(result))
 
 
 const assignStock = async (user, ticker, quantity) => {

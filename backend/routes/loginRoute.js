@@ -5,6 +5,7 @@ const userHandler = require('../database/userAccountHandler')
 const isLoggedIn = require('../isLoggedIn')
 const { pool } = require('../database/pool')
 
+
 const validateEmail = (email) => {
     const validEmail = typeof email.trim() == 'string'
         // && email.search('@') != -1 
@@ -61,7 +62,7 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    
+    console.log(req.app.get('env'))
     userHandler.getUser(req.body.user, req.body.password)
         .then((data) => { 
             if (data.login) {

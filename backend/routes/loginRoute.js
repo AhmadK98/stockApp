@@ -63,12 +63,12 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
     
     userHandler.getUser(req.body.user, req.body.password)
-        .then((data) => {
-            
+        .then((data) => { 
             if (data.login) {
             res.cookie('user', data.userdata.id, {
                 httpOnly:true,
-                signed:true     
+                signed:true,
+                secure: req.app.get('env') != 'development' 
             })
             res.json(data)
         }else{
@@ -82,13 +82,9 @@ router.post('/login', async (req, res) => {
         
 })
 
-router.get('/loggedIn', isLoggedIn, (req,res) => {
-    console.log('g')
-    res.json(JSON.stringify(true))
-    
+router.get('/loggedIn', isLoggedIn, (req,res) => {  
+   
+    res.json(JSON.stringify(true)) 
 })
-//login with details and credentials / cookies
-// bcrypt.compare('asdadsaf4', '$2b$10$fUem5kCqmxu0cr1d3lqLj.3eMIiS47C5TR/bC2WN6/uqVxdazOrTq', function(err, res) {
-//     console.log(res)
-// })
+
 module.exports = router

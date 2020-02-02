@@ -16,8 +16,13 @@ const portfolioValue = async (id, currency) => {
     return value.rows[0].total
 }
 
-// portfolioValue(1, 'GBP').then(result => console.log(result))
-
+const getStocksOwned = async (id) => {
+    params = [id]
+    let data = pool.query(`SELECT jsonb_object_keys(stocks_owned) FROM users
+        WHERE id = 1`, params)
+    return data.rows
+}
+getStocksOwned(1).then(data => console.log(data))
 
 const assignStock = async (user, ticker, quantity) => {
     try {

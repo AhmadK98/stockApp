@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const path = require('path')
+const helmet = require('helmet')
 
 const stockRoute = require('./backend/routes/stockRoute')
 const loginRoute = require('./backend/routes/loginRoute')
@@ -12,6 +13,7 @@ require('dotenv').config()
 
 
 const app = express()
+app.use(helmet())
 app.use(bodyParser.json())
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(cors({
@@ -23,18 +25,13 @@ app.use('/stocks', stockRoute)
 app.use('/users', loginRoute)
 
 
-// app.get('/', (req, res) => {
-//     res.send('hiv')
-// })
-
-console.log('test')
 if (process.env.NODE_ENV ==='production'){
     console.log('madeit')
     app.use(express.static('client/build'))
     app.get('*',(req,res)=>{
         // res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
         console.log(`Youre in production \n File path: ${path.join(__dirname+'/client/build/index.html')}`)
-  
+        
         res.sendFile(path.join(__dirname+'/client/build/index.html'))
 
     })

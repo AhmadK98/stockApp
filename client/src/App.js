@@ -50,8 +50,6 @@ function App() {
       <div className="App">
         <header className="App-header">
         {serve} 
-        
-
         <div>
                <p>You clicked {count} times</p>
                <button onClick={() => setCount(count + 1)}>

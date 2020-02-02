@@ -5,28 +5,39 @@ import LoginForm from './components/login/LoginForm'
 import './App.css';
 
 function App() {
-  const [logged, setLogged] = useState()
+  const [logged, setLogged] = useState(false)
   const [loaded, setLoaded] = useState(false)
-  
+  const [serve, setServe] = useState()
+  const [count, setCount] = useState(0);
+
+ 
 
 
   let initalize = async () => {
     let res = await fetch('/users/loggedin',{
       credentials: "include"
     })
-    let data =await res.json()
-    setLogged(data)
-    
-    
-    
+    let data = await res.json()
+    return data
   }
   
   useEffect(() => {
-    initalize()
-    .then(() =>setLoaded(true))
-  
+    initalize().then((data) => {
+      setLogged(data === "true")
+      setLoaded(true)
+    }) 
   },[])
   
+  useEffect(()=>{
+    
+    if (logged === true) {
+      setServe(<StockGetter />)   
+    }else{
+      setServe(<LoginForm />) 
+    }
+    
+  },[logged])
+
   
     
   if (loaded === false){
@@ -38,11 +49,15 @@ function App() {
     return (
       <div className="App">
         <header className="App-header">
+        {serve} 
+        
 
-          {logged=== true && 
-          <StockGetter />}
-          
-          
+        <div>
+               <p>You clicked {count} times</p>
+               <button onClick={() => setCount(count + 1)}>
+                  Click me
+               </button>
+          </div>
         </header>
       </div>
     );

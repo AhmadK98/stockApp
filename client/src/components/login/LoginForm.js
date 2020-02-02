@@ -50,6 +50,7 @@ function LoginForm() {
             },
             method:'POST',
             body: userLoginInfo,
+            credentials: "include"
             
         })
         .then(data => console.log(data))

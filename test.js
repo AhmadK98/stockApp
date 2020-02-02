@@ -1,7 +1,3 @@
-const validateUser = (user) => {
-    const validUser = typeof user.trim() == 'string'
-        && !user.match(/[!@|[€£:;><§}{~ `'"#\$%\?\^\&*\)\(+=._-]/g)
-    return validUser
-}
+const a = 'a'
 
-console.log(validateUser('gasfcsdvAx'))
+console.log(Boolean(a))

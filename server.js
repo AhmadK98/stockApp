@@ -32,11 +32,14 @@ if (process.env.NODE_ENV ==='production'){
     
     app.use(express.static('client/build'))
     app.get('*',(req,res)=>{
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+        // res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+        console.log(`You're in production: \n File path: ${path.join(__dirname+'/client/build/index.html'}`)
+        res.sendFile(path.join(__dirname+'/client/build/index.html'))
+
     })
 }
 port = process.env.PORT || 3001
 app.listen(port, (res) => {
-    console.log(process.env.NODE_ENV)
+    
     console.log(`connected on port ${port}`)
 })

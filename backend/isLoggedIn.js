@@ -1,4 +1,6 @@
-const e = require("express")
+const express = require("express")
+require('dotenv').config()
+
 
 function isLoggedIn(req,res,next){
     
@@ -9,4 +11,15 @@ function isLoggedIn(req,res,next){
     }
 }
 
-module.exports = isLoggedIn
+function isAuth(req,res,next){
+    
+    if (process.env.COOKIE_SECRET){
+        
+        next()
+    }else{
+        res.json(JSON.stringify(false))
+    }
+}
+
+module.exports.isLoggedIn = isLoggedIn
+module.exports.isAuth = isAuth

@@ -42,7 +42,6 @@ function LoginForm() {
             "user":document.getElementById('username').value,
             "password":document.getElementById('password').value
         })
-        
         await fetch('/users/login',
         {
             headers:{
@@ -50,11 +49,9 @@ function LoginForm() {
             },
             method:'POST',
             body: userLoginInfo,
-            credentials: "include"
-            
+            credentials: "include"  
         })
-        .then(data => console.log(data))
-        .catch(err => console.log(err))
+        
     }
 
     

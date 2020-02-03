@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const userHandler = require('../database/userAccountHandler')
-const isLoggedIn = require('../isLoggedIn')
+const {isLoggedIn} = require('../isLoggedIn')
 const { pool } = require('../database/pool')
 
 
@@ -43,21 +43,24 @@ router.get('/', (req, res) => {
 
 
 router.post('/signup', async (req, res) => {
-    if (validateEmail(req.body.email) && validatePassword(req.body.password) && validateUser(req.body.user)) {
+    try{
+        if (validateEmail(req.body.email) && validatePassword(req.body.password) && validateUser(req.body.user)) {
 
-        hashedPass = await hashPass(req.body.password)
+            hashedPass = await hashPass(req.body.password)
 
-        userHandler.addUser(req.body.username, hashedPass, req.body.email).then(result => res.json({ message: result }))
+            userHandler.addUser(req.body.user, hashedPass, req.body.email).then(result => res.json({ message: result }))
 
 
-    } else if (validateEmail(req.body.email)) {
-        res.json({
-            message: 'Please enter a valid password',
-            length: 'Greater than 6 chars',
-            attributes: 'Must include letters and numbers'
-        })
-    } else {
-        res.json({ message: 'Please enter a valid email' })
+        } else if (validateEmail(req.body.email)) {
+            res.json({
+                message: 'Please enter a valid password',
+                length: 'Greater than 6 chars',
+                attributes: 'Must include letters and numbers'
+            })
+        } else {
+            res.json({ message: 'Please enter a valid email' })
+    }}catch(err){
+        res.json({message:'Please enter all details'})
     }
 })
 

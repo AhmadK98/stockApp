@@ -1,13 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const stockHandler = require('../database/stockHandler')
+const userData = require('../database/userDataHandler')
 
-router.get('/:stock', (req, res) => {
+router.get('/portfoliovalue/:id', async (req, res) => {
     let includeTime = req.query.includeTime ? true : null
-    stockHandler.getCurrentValue(req.params.stock, includeTime)
-        .then(data => res.json(data))
-        .catch(err => res.json('Could not retrieve data'))
-
+    let value = userData.getPortfolio(req.params.id, 'GBP')
+    let stocks = userData.getStocksOwned(req.params.id)
+        // .then(data => res.json(data))
+        // .catch(err => res.json('Could not retrieve data'))
+    res.json({value:await value,stocks_owned:await stocks})
 })
 
 

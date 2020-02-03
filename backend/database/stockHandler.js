@@ -296,6 +296,7 @@ const getCurrentValue = async (ticker, includeTime) => {  //gets current value, 
 
 const updateAllWtd = async () => {//updates prices of all stocks, creates links split by limit of api call and updates each stock entry with time and price
     tickers = []
+    console.log('WE UPDATING')
     try {
         const response = await pgQuery('SELECT ticker, country FROM stocks')
         await response.rows.forEach(object => {
@@ -322,7 +323,7 @@ const updateAllWtd = async () => {//updates prices of all stocks, creates links 
     }
 }
 
-
+// updateAllWtd()
 
 
 module.exports.getCurrentValue = getCurrentValue

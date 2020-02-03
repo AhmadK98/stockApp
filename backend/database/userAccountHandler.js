@@ -28,7 +28,7 @@ const addUser = async (username, password, email) => {
         if (err.code == 23505) {
             return `${err.constraint.split('_')[1]} already exists`
         } else {
-            return err
+            return 'ERROR IN CREATION PROCESS'
         }
     }
 }

@@ -50,6 +50,7 @@ function App() {
     return (
       <div className="App">
         <header className="App-header">
+        <LoginForm />
         <StockGetter />
         <div>
                <p>You clicked {count} times</p>

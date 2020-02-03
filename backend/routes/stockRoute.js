@@ -11,8 +11,4 @@ router.get('/:stock', (req, res) => {
 })
 
 
-
-
-
-
 module.exports = router

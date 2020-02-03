@@ -8,9 +8,11 @@ const helmet = require('helmet')
 
 
 
+
 const stockRoute = require('./backend/routes/stockRoute')
 const loginRoute = require('./backend/routes/loginRoute')
-const isLoggedIn = require('./backend/isLoggedIn')
+const dashboardRoute = require('./backend/routes/dashboardRoute')
+const {isLoggedIn, isAuth} = require('./backend/isLoggedIn')
 
 require('dotenv').config()
 
@@ -22,14 +24,18 @@ app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(cors({
     credentials:true
 }))
+app.use(bodyParser.urlencoded({
+    extended: false
+ }));
 
 
 app.use('/stocks', stockRoute)
 app.use('/users', loginRoute)
+app.use('/dashboard',isAuth, dashboardRoute)
 
 
 if (process.env.NODE_ENV ==='production'){
-    console.log('madeit')
+    
     app.use(express.static('client/build'))
     app.get('*',(req,res)=>{
         // res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))

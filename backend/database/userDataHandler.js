@@ -1,7 +1,7 @@
 const { pool } = require('./pool')
 
 
-const portfolioValue = async (id, currency) => {
+const getPortfolio = async (id, currency) => {
     const params = [id, currency]
     const value = await pool.query(
         `SELECT ROUND(SUM(value * ((SELECT conversion FROM currency WHERE symbol = upper($2))/conversion)),2) total FROM 
@@ -17,10 +17,13 @@ const portfolioValue = async (id, currency) => {
 }
 
 const getStocksOwned = async (id) => {
-    params = [id]
-    let data = pool.query(`SELECT jsonb_object_keys(stocks_owned) FROM users
-        WHERE id = 1`, params)
-    return data.rows
+    try{
+        params = [id]
+        let data = await pool.query(`SELECT stocks_owned FROM users where id=$1`, params)
+        return data.rows[0].stocks_owned
+    }catch(err){
+        return 'ERROR'
+    }
 }
 
 
@@ -56,8 +59,8 @@ const assignMultipleStocks = async (user, tickersQuantity) => {
     })
 }
 
-tickerQuantity = { 'TSLA': 9, 'GOOGL': 1, 'AAPL': 2, 'MSFT': 3, 'PYPL': 3, 'AMD': 6, 'DIS': 2, 'JD.L': 11, 'SNAP': 5, 'SXX.L': 100 }
-// assignMultipleStocks(1, tickerQuantity)
+// tickerQuantity = { 'TSLA': 9, 'GOOGL': 1, 'AAPL': 2, 'MSFT': 3, 'PYPL': 3, 'AMD': 6, 'DIS': 2, 'JD.L': 11, 'SNAP': 5, 'SXX.L': 100 }
+// getStocksOwned(1).then(data => console.log(data))
 
 
 module.exports.getPortfolio = getPortfolio

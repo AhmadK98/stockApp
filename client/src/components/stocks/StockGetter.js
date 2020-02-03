@@ -1,19 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import '../../App.css';
-const {getStocksOwned, getPortfolio} = require('../../../backend/database/userDataHandler')
+
 
 
 function StockGetter() {
-   const [totalWorth, setTotalWorth] = useState(null) 
+   const [portfolio, setPortfolio] = useState(null) 
 
-    useEffect(() => {
-      getPortfolio.then(data => setTotalWorth(data))
+    useEffect(async () => {
+      let res = await fetch('/dashboard/portfolioValue/1')
+      let data = await res.json()
+      console.log(await data)
+      setPortfolio(data.value)
     },[])
   
   return (
     <div className="App">
       <header className="App-header">
-        {getPortfolio}
+        {portfolio}
       </header>
     </div>
   );

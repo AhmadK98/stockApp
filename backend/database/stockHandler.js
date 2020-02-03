@@ -139,11 +139,11 @@ const updateStock = async (ticker, country) => { //only updates US stocks ATM
 const getAllHistoricValue = async (ticker, includeTime, from, to) => {  //all prices within a range
 
     try {
-        try{
-            fromDate = from ? new Date(from).toISOString():new Date('1950').toISOString()
-            toDate = to ? new Date(to).toISOString():'current_timestamp'
-            
-        }catch(err){
+        try {
+            fromDate = from ? new Date(from).toISOString() : new Date('1950').toISOString()
+            toDate = to ? new Date(to).toISOString() : 'current_timestamp'
+
+        } catch (err) {
             throw 'Invalid date format'
         }
         let response = await pgQuery(`SELECT time_series FROM (
@@ -160,7 +160,7 @@ const getAllHistoricValue = async (ticker, includeTime, from, to) => {  //all pr
         } catch {
             data = response
         }
-            return [data,{'range':{'from':fromDate, 'to':toDate}}]//throw
+        return [data, { 'range': { 'from': fromDate, 'to': toDate } }]//throw
 
     } catch (err) {
         if (err.errno !== undefined && (err.errno === 'ECONNREFUSED' || err.errno === 'ENOTFOUND')) {
@@ -174,12 +174,12 @@ const getAllHistoricValue = async (ticker, includeTime, from, to) => {  //all pr
 const getTodaysValue = async (ticker, includeTime) => {  //gets all prices with todays timestamp
 
     try {
-        
+
         let fromDate = new Date(Date.now())
-        fromDate.setHours(0,0,0,0)
+        fromDate.setHours(0, 0, 0, 0)
         fromDate = fromDate.toISOString()
         let toDate = 'current_timestamp'
-            
+
         let response = await pgQuery(`SELECT time_series FROM (
             SELECT jsonb_array_elements(data)AS "time_series" , ticker
             FROM stocks
@@ -194,7 +194,7 @@ const getTodaysValue = async (ticker, includeTime) => {  //gets all prices with 
         } catch {
             data = response
         }
-            return [data,{'range':{'from':fromDate, 'to':toDate}}]//throw
+        return [data, { 'range': { 'from': fromDate, 'to': toDate } }]//throw
 
     } catch (err) {
         if (err.errno !== undefined && (err.errno === 'ECONNREFUSED' || err.errno === 'ENOTFOUND')) {
@@ -208,11 +208,11 @@ const getTodaysValue = async (ticker, includeTime) => {  //gets all prices with 
 const getOneHistoricValue = async (ticker, includeTime, from, to) => { //gets closing price stock of each day within the range
 
     try {
-        try{
-            fromDate = from ? new Date(from).toISOString():new Date('1950').toISOString()
-            toDate = to ? new Date(to).toISOString():'current_timestamp'
-            
-        }catch(err){
+        try {
+            fromDate = from ? new Date(from).toISOString() : new Date('1950').toISOString()
+            toDate = to ? new Date(to).toISOString() : 'current_timestamp'
+
+        } catch (err) {
             throw 'Invalid date format'
         }
         params = [ticker, toDate]
@@ -242,7 +242,7 @@ const getOneHistoricValue = async (ticker, includeTime, from, to) => { //gets cl
         } catch {
             data = response
         }
-            return [data,{'range':{'from':fromDate, 'to':toDate}}]//throw
+        return [data, { 'range': { 'from': fromDate, 'to': toDate } }]//throw
 
     } catch (err) {
         if (err.errno !== undefined && (err.errno === 'ECONNREFUSED' || err.errno === 'ENOTFOUND')) {
@@ -303,13 +303,13 @@ const updateAllWtd = async () => {//updates prices of all stocks, creates links 
             tickers.push(object.ticker)
         })
 
-        const links = await apiGetters.wtdApiCreateLinks(await tickers)     
+        const links = await apiGetters.wtdApiCreateLinks(await tickers)
         links.forEach(async link => {
             stock = await apiGetters.wtdApiUseLinks(link)
             await stock.forEach(stock => {
                 if (stock.currency == 'GBX') {
                     stock.currency = 'GBP'
-                    stock.price = Math.round(stock.price)/100
+                    stock.price = Math.round(stock.price) / 100
                 }
                 let dataValue = `data || jsonb_build_object('time',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',${stock.price})`
                 let uploaded = pgQuery(`UPDATE stocks 

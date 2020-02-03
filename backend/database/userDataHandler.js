@@ -22,7 +22,7 @@ const getStocksOwned = async (id) => {
         WHERE id = 1`, params)
     return data.rows
 }
-getStocksOwned(1).then(data => console.log(data))
+
 
 const assignStock = async (user, ticker, quantity) => {
     try {
@@ -60,3 +60,5 @@ tickerQuantity = { 'TSLA': 9, 'GOOGL': 1, 'AAPL': 2, 'MSFT': 3, 'PYPL': 3, 'AMD'
 // assignMultipleStocks(1, tickerQuantity)
 
 
+module.exports.getPortfolio = getPortfolio
+module.exports.getStocksOwned = getStocksOwned 

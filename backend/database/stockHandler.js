@@ -136,7 +136,7 @@ const updateStock = async (ticker, country) => { //only updates US stocks ATM
 // pgQuery("UPDATE stocks SET data =  data || jsonb_build_object('tife',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',5)").then(res => console.log(res.rows))
 
 
-const getAllHistoricValue = async (ticker, includeTime, from, to) => {  // gets latest object in db with matching ticker, use includeTime to include s
+const getAllHistoricValue = async (ticker, includeTime, from, to) => {  //all prices within a range
 
     try {
         try{
@@ -171,7 +171,7 @@ const getAllHistoricValue = async (ticker, includeTime, from, to) => {  // gets 
     }
 }
 
-const getTodaysValue = async (ticker, includeTime) => {  // gets latest object in db with matching ticker, use includeTime to include s
+const getTodaysValue = async (ticker, includeTime) => {  //gets all prices with todays timestamp
 
     try {
         
@@ -205,7 +205,7 @@ const getTodaysValue = async (ticker, includeTime) => {  // gets latest object i
     }
 }
 
-const getOneHistoricValue = async (ticker, includeTime, from, to) => {  // gets latest object in db with matching ticker, use includeTime to include s
+const getOneHistoricValue = async (ticker, includeTime, from, to) => { //gets closing price stock of each day within the range
 
     try {
         try{
@@ -253,9 +253,9 @@ const getOneHistoricValue = async (ticker, includeTime, from, to) => {  // gets 
     }
 }
 
-// getTodaysValue('SXX.L', true).then(date => console.log(date[0]))
 
-const getCurrentValue = async (ticker, includeTime) => {  // gets latest object in db with matching ticker, use includeTime to include s
+
+const getCurrentValue = async (ticker, includeTime) => {  //gets current value, should change to current price column
     try {
         let response = await pgQuery(`SELECT time_series FROM (
             SELECT jsonb_array_elements(data)AS "time_series" , ticker
@@ -294,7 +294,7 @@ const getCurrentValue = async (ticker, includeTime) => {  // gets latest object 
 
 
 
-const updateAllWtd = async () => {//updates prices of all stocks
+const updateAllWtd = async () => {//updates prices of all stocks, creates links split by limit of api call and updates each stock entry with time and price
     tickers = []
     try {
         const response = await pgQuery('SELECT ticker, country FROM stocks')

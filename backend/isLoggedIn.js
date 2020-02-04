@@ -3,12 +3,12 @@ require('dotenv').config()
 
 
 function isLoggedIn(req, res, next) {
-    next()
-    // if (req.signedCookies.user){
-    //     next()
-    // }else{
-    //     res.json(JSON.stringify(false))
-    // }
+
+    if (req.signedCookies.user) {
+        next()
+    } else {
+        res.json(JSON.stringify(false))
+    }
 }
 
 function isAuth(req, res, next) {

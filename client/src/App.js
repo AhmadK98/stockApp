@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import StockGetter from './components/stocks/StockGetter'
 import LoginForm from './components/login/LoginForm'
+import Loading from './components/loading/Loading'
+import Navbar from './components/navbar/Navbar'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 
 
@@ -44,16 +52,31 @@ function App() {
 
   if (loaded === false) {
     return (
+      <div className="App">
+        <header className="App-header">
+          <Loading />
+        </header>
+      </div>
 
-      <div style={{ 'color': 'black' }}>LOADING, PLEASE wait</div>
     )
+
   } else {
     return (
       <div className="App">
+
         <header className="App-header">
-          <LoginForm />
-          <StockGetter />
+          <Navbar />
+          <Router>
+            <Switch>
+              {/* <Route path="/" exact component={LoginForm} /> */}
+              <Route path="/login" component={LoginForm} />
+              <Route path="/dasboard" component={StockGetter} />
+            </Switch>
+          </Router>
         </header>
+
+
+
       </div>
     );
   }

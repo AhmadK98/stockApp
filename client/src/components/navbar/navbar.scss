@@ -1,0 +1,35 @@
+.navbar{
+    width:100%;
+    
+    
+    color:white;
+    position: fixed;
+    
+    
+    top:0;
+    height:6%;
+
+    
+}
+
+.container{
+    
+    display:flex;
+    align-content: center;
+    width:50%;
+    height:100%;
+    position:relative
+}
+
+.home{
+    position:absolute;
+    right:0;
+    bottom:0
+}
+.login{
+   
+}
+
+.dashboard{
+    
+}

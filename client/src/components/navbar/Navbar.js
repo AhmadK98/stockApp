@@ -6,11 +6,11 @@ import './navbar.scss';
 function Navbar() {
 
     return (
-        <div class="navbar">
-            <div class="container">
-                <div class="home">StockTracker</div>
-                <div class="dashboard">Dashboard</div>
-                <div class="login">Login</div>
+        <div className="navbar">
+            <div className="container">
+                <div className="home">StockTracker</div>
+                <div className="dashboard">Dashboard</div>
+                <div className="login">Login</div>
             </div>
 
         </div>

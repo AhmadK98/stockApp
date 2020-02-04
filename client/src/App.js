@@ -7,7 +7,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
 
 
@@ -68,9 +69,9 @@ function App() {
           <Navbar />
           <Router>
             <Switch>
-              {/* <Route path="/" exact component={LoginForm} /> */}
+              {/* <Route path="/" exact component={Home} /> */}
               <Route path="/login" component={LoginForm} />
-              <Route path="/dasboard" component={StockGetter} />
+              <Route path="/dash" component={StockGetter} />
             </Switch>
           </Router>
         </header>

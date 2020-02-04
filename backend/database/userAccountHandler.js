@@ -43,7 +43,7 @@ const getUser = async (user, password) => {
             userData = await pool.query(`SELECT * FROM users where email = $1`, params)
         }
         if (userData.rowCount == 0) {
-            throw 'Username/Email or Password is incorrect, please try again'
+            throw 'fail'
         }
 
         const verifyPassword = await bcrypt.compare(password, await userData.rows[0].password)
@@ -54,7 +54,7 @@ const getUser = async (user, password) => {
             return { userdata: userData.rows[0], login: true }
 
         } else {
-            throw 'Username/Email or Password is incorrect, please try again'
+            throw 'fail'
         }
     } catch (err) {
         return err

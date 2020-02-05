@@ -1,14 +1,44 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect} from 'react'
 import './login.scss'
 import {
-    Redirect
+    // BrowserRouter as Route,
+    // Redirect,
+    useHistory
   } from "react-router-dom";
 
+
 function LoginForm() {
-    const [logged, setLogged] = useState(null)
+    let history = useHistory()
+    // const [logged, setLogged] = useState(null)
+
+    console.log('Login')
+    let initialize = async () => {
+        let res = await fetch('/users/loggedin', {
+          credentials: "include"
+        })
+        let data = await res.json()
+        
+        if (await data === 'true'){
+            history.replace('/dash')
+        }
+      }
+    useEffect(()=>{
+        initialize()
+    },[])
+
+    // const PrivateRoute = ({ component: Component, ...rest }) => (
+    //     console.log(logged),
+    //     <Route {...rest} render={(props) => (
+          
+    //       logged === true
+    //         ? <Component {...props} />
+    //         : <Redirect to='/login' />
+    //     )} />
+    //   )
 
     const loginSubmit = async (e) => {
         e.preventDefault()
+        
         let userLoginInfo = JSON.stringify({
             "user": document.getElementById('username').value,
             "password": document.getElementById('password').value
@@ -24,20 +54,19 @@ function LoginForm() {
             })
             .then((req) =>req.json())
             .then((data)=>{
-                setLogged(data)
-                console.log(data)})
-        
-
+                // setLogged(data.login === true)
+                if (data.login === true){ 
+                    setTimeout(()=>{
+                        // console.log('hiAgian')
+                        history.replace('/dash') 
+                    },2000) 
+                       
+                }})
     }
-    // useEffect([logged])
-    console.log(typeof null)
+   
 
-    if(logged != null & logged !='fail'){
-        console.log(logged)
-        return <Redirect to="/dash" />
-    }else{
-        console.log(typeof logged)
     return (
+        
         <form id='loginForm' onSubmit={loginSubmit}>
             <div className='div-login-form' >
                 <div className='welcome-message'>Welcome</div>
@@ -64,6 +93,6 @@ function LoginForm() {
 
     )
     }
-}
+
 
 export default LoginForm

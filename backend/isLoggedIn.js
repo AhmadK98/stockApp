@@ -14,7 +14,6 @@ function isLoggedIn(req, res, next) {
 function isAuth(req, res, next) {
 
     if (process.env.COOKIE_SECRET) {
-
         next()
     } else {
         res.json(JSON.stringify(false))

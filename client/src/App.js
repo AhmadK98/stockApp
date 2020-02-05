@@ -3,11 +3,12 @@ import StockGetter from './components/stocks/StockGetter'
 import LoginForm from './components/login/LoginForm'
 import Loading from './components/loading/Loading'
 import Navbar from './components/navbar/Navbar'
+import Home from './components/home/Home'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
+  // Link,
   Redirect
 } from "react-router-dom";
 
@@ -16,15 +17,15 @@ import {
 import './App.css';
 
 function App() {
-  const [logged, setLogged] = useState(false)
+  const [logged, setLogged] = useState(true)
   const [loaded, setLoaded] = useState(false)
   // const [serve, setServe] = useState()
-  const [count, setCount] = useState(0);
+ 
 
 
 
 
-  let initalize = async () => {
+  let initialize = async () => {
     let res = await fetch('/users/loggedin', {
       credentials: "include"
     })
@@ -33,11 +34,18 @@ function App() {
   }
 
   useEffect(() => {
-    initalize().then((data) => {
+    console.log('appRerender')
+    const interval = setInterval(()=>{
+    initialize().then((data) => {
+      
       setLogged(data === "true")
       setLoaded(true)
+      clearInterval(interval)
     })
+  },1000)
+  
   }, [])
+
 
   // useEffect(()=>{
 
@@ -48,8 +56,14 @@ function App() {
   //   }
 
   // },[logged])
-
-
+ 
+  
+  const PrivateRoute =  ({ component: Component, ...rest }) => (
+    initialize().then((data)=>setLogged(data==="true")),
+    <Route {...rest} render={ (props) => (
+      logged === true ? <Component {...props} /> : <Redirect to='/login' />
+    )} />
+  )
 
   if (loaded === false) {
     return (
@@ -69,9 +83,9 @@ function App() {
           <Navbar />
           <Router>
             <Switch>
-              {/* <Route path="/" exact component={Home} /> */}
+              <Route path="/" exact component={Home} />
               <Route path="/login" component={LoginForm} />
-              <Route path="/dash" component={StockGetter} />
+              <PrivateRoute path="/dash" component={StockGetter} />
             </Switch>
           </Router>
         </header>

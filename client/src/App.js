@@ -80,10 +80,11 @@ function App() {
       <div className="App">
 
         <header className="App-header">
-          <Navbar />
+          
           <Router>
+            <Navbar />
             <Switch>
-              <Route path="/" exact component={Home} />
+              <Route exact path="/" component={Home} />
               <Route path="/login" component={LoginForm} />
               <PrivateRoute path="/dash" component={StockGetter} />
             </Switch>

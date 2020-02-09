@@ -1,11 +1,11 @@
 .navbar{
     width:100%;
     
-    
+    background-color: grey;
     color:white;
     position: fixed;
     
-    
+    justify-content: center;
     top:0;
     height:6%;
 
@@ -16,7 +16,7 @@
     
     display:flex;
     align-content: center;
-    width:50%;
+    width:100%;
     height:100%;
     position:relative
 }
@@ -24,10 +24,12 @@
 .home{
     position:absolute;
     right:0;
-    bottom:0
+    bottom:0;
+    text-decoration: none;
+    color:white;
 }
 .login{
-   
+   background-color: white;
 }
 
 .dashboard{

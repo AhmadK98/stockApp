@@ -4,8 +4,26 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const path = require('path')
 const helmet = require('helmet')
+const expressGraphQL = require('express-graphql')
+const {
+    GraphQLSchema,
+    GraphQLObjectType,
+    GraphQLString
+} = require('graphql')
 
 
+const schema1 = new GraphQLSchema({
+    query: new GraphQLObjectType({
+        name: 'Ahmad',
+        fields: () =>({
+            message: {
+            type: GraphQLString,
+            resolve: () => 'Hi'
+            }
+        })
+    })
+    
+})
 
 
 
@@ -28,7 +46,11 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-
+app.use('/graphql',expressGraphQL({
+    schema: schema1,
+    graphiql:true
+    
+}))
 app.use('/stocks', stockRoute)
 app.use('/users', loginRoute)
 app.use('/dashboard', isLoggedIn, dashboardRoute)

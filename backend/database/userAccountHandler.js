@@ -34,8 +34,10 @@ const addUser = async (username, password, email) => {
 }
 
 const getUser = async (user, password) => {
+    
     let userData
     let params = [user]
+    
     try {
         if (!user.match(/[!@|[€£:;><§}{~ `'"#\$%\?\^\&*\)\(+=._-]/g)) {
             userData = await pool.query(`SELECT * FROM users where username = $1`, params)

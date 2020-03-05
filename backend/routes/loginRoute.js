@@ -76,12 +76,12 @@ router.post('/login', async (req, res) => {
             })
             res.json(data)
         }else{
-            res.json(data)
+            res.status(400).send(data)
         }
 
         })
         .catch(err => {
-            console.log(err + 'g')
+            res.status(400).send(data)
         })
         
 })

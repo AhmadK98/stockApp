@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import StockGetter from './components/stocks/StockGetter'
+import Dashboard from './components/stocks/Dashboard'
 import LoginForm from './components/login/LoginForm'
 import Loading from './components/loading/Loading'
 import Navbar from './components/navbar/Navbar'
@@ -20,7 +20,7 @@ function App() {
   const [logged, setLogged] = useState(true)
   const [loaded, setLoaded] = useState(false)
   // const [serve, setServe] = useState()
- 
+
 
 
 
@@ -35,15 +35,15 @@ function App() {
 
   useEffect(() => {
     console.log('appRerender')
-    const interval = setInterval(()=>{
-    initialize().then((data) => {
-      
-      setLogged(data === "true")
-      setLoaded(true)
-      clearInterval(interval)
-    })
-  },1000)
-  
+    const interval = setInterval(() => {
+      initialize().then((data) => {
+
+        setLogged(data === "true")
+        setLoaded(true)
+        clearInterval(interval)
+      })
+    }, 1000)
+
   }, [])
 
 
@@ -56,11 +56,11 @@ function App() {
   //   }
 
   // },[logged])
- 
-  
-  const PrivateRoute =  ({ component: Component, ...rest }) => (
-    initialize().then((data)=>setLogged(data==="true")),
-    <Route {...rest} render={ (props) => (
+
+
+  const PrivateRoute = ({ component: Component, ...rest }) => (
+    initialize().then((data) => setLogged(data === "true")),
+    <Route {...rest} render={(props) => (
       logged === true ? <Component {...props} /> : <Redirect to='/login' />
     )} />
   )
@@ -80,13 +80,13 @@ function App() {
       <div className="App">
 
         <header className="App-header">
-          
+
           <Router>
             <Navbar />
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/login" component={LoginForm} />
-              <PrivateRoute path="/dash" component={StockGetter} />
+              <PrivateRoute path="/dash" component={Dashboard} />
             </Switch>
           </Router>
         </header>

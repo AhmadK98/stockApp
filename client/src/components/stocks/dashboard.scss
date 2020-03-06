@@ -19,10 +19,73 @@
     margin-right:0px
 }
 
-.dropdown-menu{
-    cursor: pointer
+.dropdown-menu {
+    cursor: pointer;
+    margin-top:2px;
+    max-width: 10px !important
 }
 
 .dropdown-item:hover{
     background-color: #6c757d;
+}
+
+.dropdown {
+   
+    margin-top:12.5px;
+    
+}
+
+.currencyText{
+    border-left:#4e555b 2px solid;
+    padding-left:15px;
+    
+    margin-left:5px
+    
+}
+
+.portfolio-value {
+    color:black
+}
+
+
+
+.test {
+    min-height:2.5em;
+    margin:0px;
+    padding:0px;
+    position:relative
+}
+
+.test2 {
+    position: absolute;
+    // margin-left: 50%;
+    width: 100%;
+    top:35%
+   
+}
+
+.stockCard {
+    background-color: white;
+    height:30vh;
+    border-color: black;
+    margin:15px 0px 0px 20px;
+    border-radius: 4px;
+    border-width: 2px;
+    border-style: solid;
+    min-width: 400px;
+}
+
+.stockObject{
+    position:relative;
+    text-align:left;
+    margin-left:5px;
+    padding-bottom: 5px;
+}
+
+.stockPercent{
+    position:absolute;
+    font-size: 0.6em;
+    top:1.7em;
+    left:0.1%;
+    color:red
 }

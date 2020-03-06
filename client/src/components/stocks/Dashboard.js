@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './dashboard.scss';
 import CurrencyDropdown from './smallComponents/CurrencyDropdown'
+import StockList from './smallComponents/StockList'
 
 
 
@@ -22,22 +23,29 @@ function Dashboard() {
   }, [])
 
   return (
-    <div class="dashboard">
+    <div className="dashboard">
 
-      <div class="row">
-        <div class='col-md'>
-          portfolio value: 1000
+      <div className="row">
+        
+        <div className='col-lg-11 portfolio-value' style={{color:"black"}}>
+          <div className='test' >
+            <span style={{color:"black", fontSize:'0.7em'}}>Your portfolio value: </span>
+            <div className='test2' style={{color:"black"}}>£1000.04</div>
           </div>
-        <CurrencyDropdown />
+          
+          </div>
+        <div className="col-lg-1">
+          <CurrencyDropdown />
+        </div>
 
       </div>
 
-      <div class="row">
-        <div class="col-md-1 g">
-          Portfolio flue: {portfolio.value}
+      <div className="row">
+        <div className="col-md-3">
+          <StockList />
         </div>
 
-        <div class="col-md-10 g">
+        <div className="col-md-10 g">
           Portfolio Value: {portfolio.value}
         </div>
       </div>

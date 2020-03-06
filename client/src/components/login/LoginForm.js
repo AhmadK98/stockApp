@@ -58,7 +58,8 @@ function LoginForm() {
                 if (data.login === true){ 
                     setTimeout(()=>{
                         // console.log('hiAgian')
-                        history.replace('/dash') 
+                        history.replace('/dash')
+                        
                     },2000) 
                        
                 }})

@@ -21,11 +21,12 @@ function Navbar() {
 
         <div className="navbar sticky-top">
 
-            <div className="container">
+            <div className="container col-md-11">
                 <NavLink to="/" className='home'>stockTracker</NavLink>
                 <NavLink to="/dash" className='dashboard'>Dashboard</NavLink>
+                <input class="form-control col-md-2" type="text" placeholder="Search for a stock"></input>
                 <NavLink to="/login" className='login'>Login</NavLink>
-
+                
 
             </div>
 

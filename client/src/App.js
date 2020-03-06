@@ -65,7 +65,7 @@ function App() {
     )} />
   )
 
-  if (loaded === false) {
+  if (3 == 5) { //change to loaded === false
     return (
       <div className="App">
         <header className="App-header">
@@ -86,7 +86,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/login" component={LoginForm} />
-              <PrivateRoute path="/dash" component={Dashboard} />
+              <Route path="/dash" component={Dashboard} />
             </Switch>
           </Router>
         </header>

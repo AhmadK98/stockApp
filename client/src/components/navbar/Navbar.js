@@ -10,7 +10,7 @@ import {
     useHistory
 } from "react-router-dom";
 
-import StockGetter from '../stocks/StockGetter'
+import StockGetter from '../stocks/Dashboard'
 
 
 
@@ -19,7 +19,7 @@ function Navbar() {
 
     return (
 
-        <div className="navbar">
+        <div className="navbar sticky-top">
 
             <div className="container">
                 <NavLink to="/" className='home'>stockTracker</NavLink>

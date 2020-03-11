@@ -14,9 +14,11 @@
 }
 
 
-.h {
-    width:2vw;
-    margin-right:0px
+.btn {
+    // margin-left:45%;
+    float:right;
+    width:8vw;
+    margin-right:5%
 }
 
 .dropdown-menu {
@@ -65,14 +67,14 @@
 }
 
 .stockCard {
-    background-color: white;
+    background-color: #353535;
     // height:30vh;
-    border-color: black;
-    margin:15px 20px 0px 20px;
-    border-radius: 4px;
+    // border-color: black;
+    margin:0px 20px 0px 0px;
+    border-radius: 0px;
     border-width: 2px;
-    border-style: solid;
-    min-width: 180px;
+    // border-style: solid;
+    // min-width: 180px;
 }
 
 .stockObject{

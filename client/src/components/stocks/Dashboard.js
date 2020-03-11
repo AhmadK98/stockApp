@@ -22,36 +22,44 @@ function Dashboard() {
   }
   useEffect(() => {
     getData()
+    document.title = `£10000 - Stock Tracker`
   }, [])
 
 
   return (
+    
     <div className="dashboard">
-
+      
       <div className="row">
-        
-        <div className='col-md-11 portfolio-value' style={{color:"black"}}>
-          <div className='test' >
-            <span style={{color:"black", fontSize:'0.7em'}}>Your portfolio value: </span>
-            <div className='test2' style={{color:"black"}}>£1000.04</div>
-          </div>
-          
-          </div>
-        <div className="col-md-1" style={{marginRight:'0px'}}>
-          <CurrencyDropdown />
-        </div>
-
-      </div>
-
-      <div className="row">
-        <div className="col-md-3">
+      
+      <div className="col-md-3 col-xs-1">
           <StockList />
         </div>
-
-        <div className="col-md-9">
-          <PortfolioGraph />
+      
+      <div className='container col-md-9 col-xs-5' style={{background:'none'}}>
+        <div className='row'>
+          <div className='col-md-9 portfolio-value' style={{color:"red"}}>
+              <div className='test' >
+                <span style={{fontSize:'0.7em'}}>Your portfolio value: </span>
+                <div className='test2'>£1000.04</div>
+              </div>
+              
+              </div>
+            <div className="col-md-3" style={{background:'black',marginRight:'0px'}}>
+              <CurrencyDropdown />
+            </div>
         </div>
+       
+          <div className="col-md-12">
+            <PortfolioGraph />
+          </div>
+        </div> 
+
+          
+
       </div>
+        
+      
       
     </div>
     

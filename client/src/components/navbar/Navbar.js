@@ -24,7 +24,8 @@ function Navbar() {
             <div className="container col-md-11">
                 <NavLink to="/" className='home'>stockTracker</NavLink>
                 <NavLink to="/dash" className='dashboard'>Dashboard</NavLink>
-                <input class="form-control col-md-2" type="text" placeholder="Search for a stock"></input>
+                {/* <div className */}
+                <input class="form-control col-md-3 searchBar" type="text" placeholder="Search for a stock"></input>
                 <NavLink to="/login" className='login'>Login</NavLink>
                 
 

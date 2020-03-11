@@ -11,7 +11,7 @@ function stockList() {
 
   return (
     
-    <div className='stockCard' style={{color:"black"}}> 
+    <div className='stockCard' style={{color:"black", overflowY: 'scroll', height:'93vh'}}> 
     My Stocks
       {Object.keys(stocks).map((stock)=>{
             return  <StockCard stock={stock} amountHeld={stocks[stock]}/>

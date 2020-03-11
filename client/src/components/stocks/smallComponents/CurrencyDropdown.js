@@ -4,12 +4,12 @@ const flagClasses = { 'GBP': 'flag-icon-gb', 'USD': 'flag-icon-us', 'PKR': 'flag
 
 function useLocalStorageCurrency(currencyOption, defaultValue) {
   
-  const [currency, setCurrency] = useState(window.localStorage.getItem('currencyOption'))
-  const [flag, setFlag] = useState(flagClasses[window.localStorage.getItem('currencyOption')])
+  const [currency, setCurrency] = useState(currencyOption || defaultValue)
+  const [flag, setFlag] = useState(flagClasses[currencyOption])
 
   useEffect(() => {
     window.localStorage.setItem('currencyOption', currency)
-    setFlag(flagClasses[window.localStorage.getItem('currencyOption')])
+    setFlag(flagClasses[currency])
   }, [currency, flag])
   
   return [currency, setCurrency, flag]
@@ -22,7 +22,7 @@ function CurrencyDropdown() {
 
   return (
 
-    <div class="dropdown"> 
+    <div class="dropdown" > 
       <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <div className={flag + ' flag-icon h col-md'}></div>
         {currency}

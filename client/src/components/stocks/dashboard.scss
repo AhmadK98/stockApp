@@ -67,12 +67,13 @@
 }
 
 .stockCard {
-    background-color: #353535;
+    background-color: none;
     // height:30vh;
     // border-color: black;
     margin:0px 20px 0px 0px;
     border-radius: 0px;
     border-width: 2px;
+    
     // border-style: solid;
     // min-width: 180px;
 }
@@ -80,8 +81,10 @@
 .stockObject{
     position:relative;
     text-align:left;
-    margin-left:5px;
-    padding-bottom: 5px;
+    margin-left:15px;
+    padding-bottom: 10px;
+    border-bottom: solid black 1px
+    
 }
 
 .stockPercent{

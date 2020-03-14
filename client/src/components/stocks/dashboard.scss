@@ -3,15 +3,15 @@
     
 // }
 
-.g {
-    background-color: white;
-    height:30vh;
-    border-color: black;
-    margin:15px 0px 0px 20px;
-    border-radius: 4px;
-    border-width: 2px;
-    border-style: solid;
-}
+// .g {
+//     background-color: white;
+//     height:30vh;
+//     border-color: black;
+//     margin:15px 0px 0px 20px;
+//     border-radius: 4px;
+//     border-width: 2px;
+//     border-style: solid;
+// }
 
 
 .btn {
@@ -75,7 +75,7 @@
     border-width: 2px;
     
     // border-style: solid;
-    // min-width: 180px;
+    min-width: 160px;
 }
 
 .stockObject{
@@ -93,4 +93,22 @@
     top:1.7em;
     left:0.1%;
     color:red
+}
+
+.amount-held{
+    position:relative;
+    font-size: 0.6em;
+    bottom:0.8em;
+    // left:0.1%;
+    color:red;
+    float:right;
+}
+
+.total-value{
+    position:relative;
+    // font-size: 0.6em;
+    // bottom:0.8em;
+    // left:0.1%;
+    // color:red;
+    float:right;
 }

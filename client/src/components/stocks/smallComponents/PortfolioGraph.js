@@ -9,7 +9,7 @@ function PortfolioGraph() {
 
 useEffect(() =>{
     var ctx = document.getElementById('myChart').getContext('2d');
-    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    let gradient = ctx.createLinearGradient(0, 0, 0, 900);
     gradient.addColorStop(0, 'rgba(71,154,95,1)');   
     gradient.addColorStop(1, 'rgba(71,154,95,0)');
     var myChart = new Chart(ctx, {
@@ -17,15 +17,18 @@ useEffect(() =>{
         data: {
             labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday','Sunday'],
             datasets: [{
-                label: 'Portfolio Value',
+                label: {display:false},
                 data: [1000, 1500, 877,1100, 1200, 1700,1550,1231],
                 fillColor:gradient,
                 backgroundColor: gradient,
-                borderWidth: 1,
+                borderWidth: 1
                 // borderColor:'red'
             }]
         },
         options: {
+            legend : {
+                display:false
+            },
             scales: {
                 yAxes: [{
                     ticks: {
@@ -39,7 +42,9 @@ useEffect(() =>{
     
   return (
     <div style={{marginRight:'20px'}}>
-        <canvas id="myChart" height={1} width={3}></canvas>
+        <canvas id="myChart" height="1000" width="2000"></canvas>
+        {/* <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
+        </canvas> */}
     </div>
   );
 }

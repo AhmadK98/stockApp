@@ -45,7 +45,7 @@ function Dashboard() {
               </div>
 
             </div>
-            <div className="col-md-3" style={{ background: 'black', marginRight: '0px' }}>
+            <div className="col-md-3" style={{marginRight: '0px' }}>
               <CurrencyDropdown />
             </div>
           </div>

@@ -30,8 +30,8 @@ function CurrencyDropdown() {
       
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {Object.keys(flagClasses).map((flag)=>{
-          return (<a className="dropdown-item" onClick={() => { setCurrency(flag) }}><div className={flagClasses[flag] + ' flag-icon col-md'}></div>
-                  <span className="currencyText col-md">{flag}</span></a>)
+          return (<a className={`dropdown-item`} key={`${flag}-object`} onClick={() => { setCurrency(flag) }}><div className={flagClasses[flag] + ' flag-icon col-md'}></div>
+                  <span className={`currencyText col-md `} key={`${flag}-flag`}>{flag}</span></a>)
         })}
       </div>
     </div >

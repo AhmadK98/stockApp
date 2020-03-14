@@ -5,7 +5,7 @@ import Chart from 'chart.js'
 
 
 function PortfolioGraph() {
-
+const [slideValue, setSlideValue] = useState(25)
 
 useEffect(() =>{
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -41,10 +41,17 @@ useEffect(() =>{
     },[])
     
   return (
+   <div>
     <div style={{marginRight:'20px'}}>
-        <canvas id="myChart" height="1000" width="2000"></canvas>
-        {/* <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
-        </canvas> */}
+            <canvas id="myChart" height="1000" width="2000"></canvas>
+            {/* <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
+            </canvas> */}
+        </div>
+        <div className="sliderContainer">
+            <input type="range" min="1" max="100" defaultValue={slideValue} class="slider"  id="myRange" onChange={e => setSlideValue(e.target.value)} ></input>
+            
+        </div>
+        <span style={{color:'black', background:'red'}}>{slideValue}</span>
     </div>
   );
 }

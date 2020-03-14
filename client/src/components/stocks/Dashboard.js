@@ -32,7 +32,7 @@ function Dashboard() {
 
       <div className="row">
 
-        <div className="col-md-2 col-xs-1">
+        <div className="col-md-3 col-xs-1">
           <StockList />
         </div>
 
@@ -53,7 +53,9 @@ function Dashboard() {
           <div className="col-md-12">
             <PortfolioGraph />
           </div>
-        </div>
+          {/* <row></row> */}
+     
+    </div>
 
 
 

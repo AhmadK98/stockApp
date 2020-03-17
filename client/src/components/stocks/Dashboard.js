@@ -22,7 +22,7 @@ function Dashboard() {
   }
   useEffect(() => {
     getData()
-    document.title = `£10000 - Stock Tracker`
+    document.title = `£10000 - Stock Tracker` //change
   }, [])
 
 

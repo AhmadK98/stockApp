@@ -41,5 +41,5 @@ const convertValue = async (ticker, currency) => {
 }
 
 // convertValue('vusa.l', 'USD').then(res => console.log(res))
-// updateCurrency()
+// updateCurrency().then(()=>console.log('bye'))
 

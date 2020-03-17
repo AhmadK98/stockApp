@@ -1,9 +1,9 @@
-
 const fetch = require('node-fetch')
 const express = require('express');
 const { pool } = require('./pool')
 const apiGetters = require('../apiGetters')
 
+// console.log('g')
 const pgQuery = async (query, params) => {
     params = params || null
     try {
@@ -14,53 +14,27 @@ const pgQuery = async (query, params) => {
     }
 }
 
-const insertStockIex = async (ticker, name, fund, country) => {
+const insertStockWtdNew = async (ticker, name, fund, country) => {
     fund = fund || 'stock'
     country = country || 'USA'
-
-    try {
-        if (country == 'USA') {
-            price = apiGetters.getIexStock(ticker)
-
-        } else {
-            throw 'Stocks outside the US not yet supported!'
-        }
-        let dataValue = `'[]'::jsonb || jsonb_build_object('time',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',${await price})`
-        let params = [ticker, name, fund, country, await price]
-        let uploaded = pgQuery(`INSERT INTO stocks (
-                                    ticker,
-                                    name,
-                                    fund,
-                                    country,
-                                    data, 
-                                    price) 
-                                VALUES (upper($1),$2,$3,$4,${await dataValue},$5)`, params) //add in response if price returns null values
-    } catch (err) {
-        console.log(err)
-    }
-}
-
-
-const insertStockWtd = async (ticker, name, fund, country) => {
-    fund = fund || 'stock'
-    country = country || 'USA'
-
+    
     try {
         if (country == 'UK') {
-            ticker[0] = ticker[0] + '.L'
-
-            stock = (await apiGetters.wtdApi(ticker))[0]
-        } else {
-            stock = (await apiGetters.wtdApi(ticker))[0]
+            ticker[0] = ticker[0] + '.L'   
         }
-        let dataValue = `'[]'::jsonb || jsonb_build_object('time',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',${await stock.price})`
+        let params = [ticker]
+        let check = await pgQuery(`SELECT * FROM stocks_new WHERE ticker = '$1'`, params)
+        
+        console.log('g')
+        stock = (await apiGetters.wtdApi(ticker))[0]
+        let dataValue = `'[]'::jsonb || jsonb_build_object(to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),${await stock.price})`
         if (stock.currency == 'GBX') {
             stock.currency = 'GBP'
             stock.price = stock.price / 100
         }
-        let params = [await stock.symbol, await stock.name, fund, country, await stock.price, await stock.currency]
-
-        let uploaded = await pgQuery(`INSERT INTO stocks (
+        
+        params = [await stock.symbol, await stock.name, fund, country, await stock.price, await stock.currency]
+        let uploaded = await pgQuery(`INSERT INTO stocks_new (
                                     ticker,
                                     name,
                                     fund,
@@ -78,6 +52,18 @@ const insertStockWtd = async (ticker, name, fund, country) => {
 
 
 
+// insertStockWtdNew(['TSCO'], 'AMD', 'stock', 'UK')
+
+insertStockWtdNew(['RBS.L'],'Vanguard',null,'UK')
+
+// const insertStock = async (ticker, name, fund, country) {
+//     if (typeof ticker == String){
+//         insertStockIex(ticker, name, fund, country)
+//     }else{
+//         insertStockWtd(ticker,name,fund,)
+//     }
+// }
+
 const updateStock = async (ticker, country) => { //only updates US stocks ATM
 
     country = country || 'USA'
@@ -91,7 +77,7 @@ const updateStock = async (ticker, country) => { //only updates US stocks ATM
         let dataValue = `data || jsonb_build_object('time',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',${await price})`
 
 
-        let uploaded = pgQuery(`UPDATE stocks 
+        let uploaded = pgQuery(`UPDATE stocks_new
                                 SET price = ${await receivedPrice}, data = ${dataValue}
                                 WHERE ticker = '${ticker}'`) //add in response if price returns null values
     } catch (err) {
@@ -104,6 +90,8 @@ const updateStock = async (ticker, country) => { //only updates US stocks ATM
 
     }
 }
+
+
 
 const getAllHistoricValue = async (ticker, includeTime, from, to) => {  //all prices within a range
 
@@ -261,9 +249,12 @@ const getCurrentValue = async (ticker, includeTime) => {  //gets current value, 
     }
 }
 
+// getOneHistoricValue('SXX.L', true, '2010-01','2020-04').then((data)=>console.log(data[0]))
+
+
 const updateAllWtd = async () => {//updates prices of all stocks, creates links split by limit of api call and updates each stock entry with time and price
     tickers = []
-    
+    console.log('WE UPDATING')
     try {
         const response = await pgQuery('SELECT ticker, country FROM stocks')
         await response.rows.forEach(object => {
@@ -293,7 +284,7 @@ const updateAllWtd = async () => {//updates prices of all stocks, creates links 
 // updateAllWtd()
 
 
-module.exports.insertStockWtd = insertStockWtd
+// module.exports.getCurrentValue = getCurrentValue
 
 // SELECT SUM(stockvalue) FROM
 // (SELECT id, ticker, value::numeric, price, price*value::numeric AS stockvalue FROM(

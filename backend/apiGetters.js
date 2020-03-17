@@ -47,6 +47,7 @@ const wtdApi = async (tickers) => {
     const remainder = tickers.length % 5
     const links = []
     apiKey = 'UsQhjjiFOodsCYt8eWSmRqY7qquA9yqlH2A9uhqv1UvotS00D6AqSeBg8VVf'
+    console.log('CHANGE THIS APIGETTERS.js')
     for (i = 0; i < numLoops; i++) {
         let tickersFive = (tickers.slice(i * 5, i * 5 + 5))
         link = `https://api.worldtradingdata.com/api/v1/stock?symbol=${tickersFive.toString()}&api_token=${apiKey}`
@@ -60,6 +61,8 @@ const wtdApi = async (tickers) => {
         console.log(err)
     }
 }
+
+// wtdApi(['TSCO.L']).then((data)=>console.log(data) )
 
 const wtdApiCreateLinks = (tickers) => {
     const numLoops = tickers.length / 5

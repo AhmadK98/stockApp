@@ -22,10 +22,13 @@ const insertStockWtdNew = async (ticker, name, fund, country) => {
         if (country == 'UK') {
             ticker[0] = ticker[0] + '.L'   
         }
-        let params = [ticker]
-        let check = await pgQuery(`SELECT * FROM stocks_new WHERE ticker = '$1'`, params)
+        console.log(ticker)
+        let params = [ticker[0]]
+        let check = await pgQuery(`SELECT * FROM stocks_new WHERE ticker = $1`, params)
+        if (check.rowCount == 0) {
+            
         
-        console.log('g')
+        // console.log('g')
         stock = (await apiGetters.wtdApi(ticker))[0]
         let dataValue = `'[]'::jsonb || jsonb_build_object(to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),${await stock.price})`
         if (stock.currency == 'GBX') {
@@ -44,7 +47,7 @@ const insertStockWtdNew = async (ticker, name, fund, country) => {
                                     currency) 
                                 VALUES (upper($1),$2,$3,$4,${await dataValue},$5, $6)`, params)
 
-        //add in response if price returns null values
+        }//add in response if price returns null values
     } catch (err) {
         console.log(err)
     }
@@ -52,9 +55,9 @@ const insertStockWtdNew = async (ticker, name, fund, country) => {
 
 
 
-// insertStockWtdNew(['TSCO'], 'AMD', 'stock', 'UK')
+insertStockWtdNew(['TSCO'], 'AMD', 'stock', 'UK')
 
-insertStockWtdNew(['RBS.L'],'Vanguard',null,'UK')
+// insertStockWtdNew(['RBS'],'Vanguard',null,'UK')
 
 // const insertStock = async (ticker, name, fund, country) {
 //     if (typeof ticker == String){
@@ -281,9 +284,38 @@ const updateAllWtd = async () => {//updates prices of all stocks, creates links 
     }
 }
 
-// updateAllWtd()
 
+const updateAllWtdNew = async () => {//updates prices of all stocks, creates links split by limit of api call and updates each stock entry with time and price
+    tickers = []
+    console.log('WE UPDATING')
+    try {
+        const response = await pgQuery('SELECT ticker, country FROM stocks')
+        await response.rows.forEach(object => {
+            tickers.push(object.ticker)
+        })
 
+        const links = await apiGetters.wtdApiCreateLinks(await tickers)
+        links.forEach(async link => {
+            stock = await apiGetters.wtdApiUseLinks(link)
+            await stock.forEach(stock => {
+                if (stock.currency == 'GBX') {
+                    stock.currency = 'GBP'
+                    stock.price = Math.round(stock.price) / 100
+                }
+                let dataValue = `data || jsonb_build_object(to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),${stock.price})`
+                let uploaded = pgQuery(`UPDATE stocks_new 
+                                        SET price = ${stock.price}, data = ${dataValue}, currency = '${stock.currency}'
+                                        WHERE ticker = '${stock.symbol}'`) //safe to use without params because of restricted variables
+            })
+        })
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+// updateAllWtdNew()
+
+// insertStockWtdNew(['TSCO'],null, 'stock','UK')
 // module.exports.getCurrentValue = getCurrentValue
 
 // SELECT SUM(stockvalue) FROM

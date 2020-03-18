@@ -62,7 +62,8 @@ const wtdApi = async (tickers) => {
     }
 }
 
-// wtdApi(['TSCO.L']).then((data)=>console.log(data) )
+
+// wtdApi(['RBS.L' ]).then((data)=>console.log(data[0]) )
 
 const wtdApiCreateLinks = (tickers) => {
     const numLoops = tickers.length / 5
@@ -85,6 +86,10 @@ const wtdApiUseLinks = async (link) => {
         console.log(err)
     }
 }
+// wtdApiUseLinks(wtdApiCreateLinks(['TSCO.L'])).then((data) => console.log(data))
+ 
+
+
 // wtdApiUseLinks('https://api.worldtradingdata.com/api/v1/stock?symbol=TSLA&api_token=UsQhjjiFOodsCYt8eWSmRqY7qquA9yqlH2A9uhqv1UvotS00D6AqSeBg8VVf')
 //     .then(data => console.log(data))
 // a = wtdApiLinks(['TSLA', 'GOOGL', 'AAPL', 'MSFT', 'PYPL', 'AMD', 'DIS', 'JD.L', 'SNAP', 'SXX.L', 'A'])

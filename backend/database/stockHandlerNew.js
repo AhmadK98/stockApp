@@ -22,20 +22,16 @@ const insertStockWtdNew = async (ticker, name, fund, country) => {
         if (country == 'UK') {
             ticker[0] = ticker[0] + '.L'   
         }
-        console.log(ticker)
         let params = [ticker[0]]
         let check = await pgQuery(`SELECT * FROM stocks_new WHERE ticker = $1`, params)
         if (check.rowCount == 0) {
-            
-        
-        // console.log('g')
         stock = (await apiGetters.wtdApi(ticker))[0]
-        let dataValue = `'[]'::jsonb || jsonb_build_object(to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),${await stock.price})`
+        
         if (stock.currency == 'GBX') {
             stock.currency = 'GBP'
             stock.price = stock.price / 100
         }
-        
+        let dataValue = `'[]'::jsonb || jsonb_build_object(current_timestamp,${await stock.price})`
         params = [await stock.symbol, await stock.name, fund, country, await stock.price, await stock.currency]
         let uploaded = await pgQuery(`INSERT INTO stocks_new (
                                     ticker,
@@ -55,45 +51,33 @@ const insertStockWtdNew = async (ticker, name, fund, country) => {
 
 
 
-insertStockWtdNew(['TSCO'], 'AMD', 'stock', 'UK')
-
-// insertStockWtdNew(['RBS'],'Vanguard',null,'UK')
-
-// const insertStock = async (ticker, name, fund, country) {
-//     if (typeof ticker == String){
-//         insertStockIex(ticker, name, fund, country)
-//     }else{
-//         insertStockWtd(ticker,name,fund,)
-//     }
-// }
-
-const updateStock = async (ticker, country) => { //only updates US stocks ATM
-
-    country = country || 'USA'
-    try {
-        if (country == 'USA') {
-            price = await apiGetters.getIexStock(ticker)
-        } else {
-            throw 'Stocks outside the US not yet supported!'
-        }
-        let receivedPrice = await price
-        let dataValue = `data || jsonb_build_object('time',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',${await price})`
+// insertStockWtdNew(['AMZN'], 'AMD', 'stock', 'USA')
 
 
-        let uploaded = pgQuery(`UPDATE stocks_new
-                                SET price = ${await receivedPrice}, data = ${dataValue}
-                                WHERE ticker = '${ticker}'`) //add in response if price returns null values
-    } catch (err) {
+const insertHistory = async (ticker) => {
 
-        if (err.errno == 'ECONNREFUSED') {
-            return `Can't connect` //change this!!
-        } else {
-            return err
-        }
+        let params = [ticker]
+        let currency = await pgQuery('SELECT currency FROM stocks_new WHERE ticker=upper($1)',params)
+        let historicalData = await apiGetters.wtdHistory(ticker)
+        let queries = []
+        let query
+        let price
+        await Object.keys(historicalData).forEach(time => {
+            
+            price = historicalData[time]
+            
+            
+            if (currency.rows[0]['currency']== 'GBP') { 
+                price.close = Math.round(price.close) / 100
 
-    }
+            }
+            // console.log(price.close)
+            let dataValue = `data || jsonb_build_object(to_timestamp('${time}', 'YYYY-MM-DD'),${price.close})`
+            query = `UPDATE stocks_new SET price = ${price.close}, data = ${dataValue}, currency = '${currency.rows[0]['currency']}' WHERE ticker = '${ticker}'`
+            queries.push(query)
+        })
+        pgQuery(queries.join(';')).then((data)=>console.log(data))
 }
-
 
 
 const getAllHistoricValue = async (ticker, includeTime, from, to) => {  //all prices within a range
@@ -131,40 +115,15 @@ const getAllHistoricValue = async (ticker, includeTime, from, to) => {  //all pr
     }
 }
 
+const getAllHistoricValueNew = async (ticker, includeTime, from, to) => {  //all prices within a range
 
-const getTodaysValue = async (ticker, includeTime) => {  //gets all prices with todays timestamp
-
-    try {
-
-        let fromDate = new Date(Date.now())
-        fromDate.setHours(0, 0, 0, 0)
-        fromDate = fromDate.toISOString()
-        let toDate = 'current_timestamp'
-
-        let response = await pgQuery(`SELECT time_series FROM (
-            SELECT jsonb_array_elements(data)AS "time_series" , ticker
-            FROM stocks
-            WHERE ticker = upper('${ticker}') AND data IS NOT NULL) 
-            AS "unnested"
-            WHERE (time_series->> 'time')::timestamp < current_timestamp AND (time_series->> 'time')::timestamp > '${fromDate}'`
-        )
-        let data
-        try {
-            // data = await response.rows.slice(-1)[0].time_series
-            data = await response.rows
-        } catch {
-            data = response
-        }
-        return [data, { 'range': { 'from': fromDate, 'to': toDate } }]//throw
-
-    } catch (err) {
-        if (err.errno !== undefined && (err.errno === 'ECONNREFUSED' || err.errno === 'ENOTFOUND')) {
-            return `Can't connect to database`
-        } else {
-            return err
-        }
-    }
+    `SELECT d.key, d.value from
+    (SELECT data FROM stocks_new WHERE ticker='VUSA.L') q
+    JOIN jsonb_each_text(q.data) d ON true
+    WHERE key::timestamp > to_timestamp('2013-05-02','YYYY-MM-DD') and  key::timestamp < to_timestamp('2014-05-02','YYYY-MM-DD')`
 }
+
+
 
 const getOneHistoricValue = async (ticker, includeTime, from, to) => { //gets closing price stock of each day within the range
 
@@ -252,44 +211,18 @@ const getCurrentValue = async (ticker, includeTime) => {  //gets current value, 
     }
 }
 
+// getLastUpdated(ticker) = async () => {
+
+// }
+
 // getOneHistoricValue('SXX.L', true, '2010-01','2020-04').then((data)=>console.log(data[0]))
-
-
-const updateAllWtd = async () => {//updates prices of all stocks, creates links split by limit of api call and updates each stock entry with time and price
-    tickers = []
-    console.log('WE UPDATING')
-    try {
-        const response = await pgQuery('SELECT ticker, country FROM stocks')
-        await response.rows.forEach(object => {
-            tickers.push(object.ticker)
-        })
-
-        const links = await apiGetters.wtdApiCreateLinks(await tickers)
-        links.forEach(async link => {
-            stock = await apiGetters.wtdApiUseLinks(link)
-            await stock.forEach(stock => {
-                if (stock.currency == 'GBX') {
-                    stock.currency = 'GBP'
-                    stock.price = Math.round(stock.price) / 100
-                }
-                let dataValue = `data || jsonb_build_object('time',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',${stock.price})`
-                let uploaded = pgQuery(`UPDATE stocks 
-                                        SET price = ${stock.price}, data = ${dataValue}, currency = '${stock.currency}'
-                                        WHERE ticker = '${stock.symbol}'`) //safe to use without params because of restricted variables
-            })
-        })
-    }
-    catch (err) {
-        console.log(err)
-    }
-}
 
 
 const updateAllWtdNew = async () => {//updates prices of all stocks, creates links split by limit of api call and updates each stock entry with time and price
     tickers = []
     console.log('WE UPDATING')
     try {
-        const response = await pgQuery('SELECT ticker, country FROM stocks')
+        const response = await pgQuery('SELECT ticker, country FROM stocks_new')
         await response.rows.forEach(object => {
             tickers.push(object.ticker)
         })
@@ -302,7 +235,7 @@ const updateAllWtdNew = async () => {//updates prices of all stocks, creates lin
                     stock.currency = 'GBP'
                     stock.price = Math.round(stock.price) / 100
                 }
-                let dataValue = `data || jsonb_build_object(to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),${stock.price})`
+                let dataValue = `data || jsonb_build_object(to_timestamp('${stock.last_trade_time}', 'YYYY-MM-DD HH24:MI:SS'),${stock.price})` //use last trade time
                 let uploaded = pgQuery(`UPDATE stocks_new 
                                         SET price = ${stock.price}, data = ${dataValue}, currency = '${stock.currency}'
                                         WHERE ticker = '${stock.symbol}'`) //safe to use without params because of restricted variables
@@ -327,3 +260,4 @@ const updateAllWtdNew = async () => {//updates prices of all stocks, creates lin
 // JOIN stocks ON stocks.ticker=keyvalue.key) AS g
 
 //next steps:
+// insertHistory('AMZN')

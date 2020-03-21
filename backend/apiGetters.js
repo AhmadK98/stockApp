@@ -88,8 +88,32 @@ const wtdApiUseLinks = async (link) => {
 }
 // wtdApiUseLinks(wtdApiCreateLinks(['TSCO.L'])).then((data) => console.log(data))
  
+const wtdHistory = async (ticker) => {
+    const url = new URL(
+        "https://api.worldtradingdata.com/api/v1/history"
+    );
+    
+    let params = {
+        "symbol": `${ticker}`,
+        "api_token": "UsQhjjiFOodsCYt8eWSmRqY7qquA9yqlH2A9uhqv1UvotS00D6AqSeBg8VVf",
+    };
+    
+    Object.keys(params)
+        .forEach(key => url.searchParams.append(key, params[key]))
 
+    try{
+        res = await fetch(url)
+        // console.log(ticker)
+        data = await res.json()
+        // console.log(data)
+        return data.history
 
+    }catch(err){
+        console.log(err)
+    }
+}
+
+// wtdHistory('AAPL').then(data => console.log(data))
 // wtdApiUseLinks('https://api.worldtradingdata.com/api/v1/stock?symbol=TSLA&api_token=UsQhjjiFOodsCYt8eWSmRqY7qquA9yqlH2A9uhqv1UvotS00D6AqSeBg8VVf')
 //     .then(data => console.log(data))
 // a = wtdApiLinks(['TSLA', 'GOOGL', 'AAPL', 'MSFT', 'PYPL', 'AMD', 'DIS', 'JD.L', 'SNAP', 'SXX.L', 'A'])
@@ -113,10 +137,13 @@ const forex = async (base, convertTo) => {
 }
 
 
+
 module.exports.forex = forex
 
 module.exports.wtdApi = wtdApi
 module.exports.getIexStock = getIexStock
 module.exports.wtdApiCreateLinks = wtdApiCreateLinks
 module.exports.wtdApiUseLinks = wtdApiUseLinks
+module.exports.wtdHistory= wtdHistory
+
 // module.exports.mkWatch = webScrape

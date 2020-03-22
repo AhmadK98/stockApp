@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const stockHandler = require('../database/stockHandler')
 const stockHandlerNew = require('../database/stockHandlerNew')
+const currencyHandler = require('../database/currencyHandler')
 const userData = require('../database/userDataHandler')
 
 router.get('/portfoliovalue/:id', async (req, res) => {

@@ -11,10 +11,10 @@ const getPortfolio = async (id, currency) => {
         WHERE id = $1) AS userdata (id, data)
         JOIN jsonb_each_text(userdata.data) d ON TRUE) AS complete_data
         JOIN stocks ON stocks.ticker=complete_data.ticker) AS total_value
-        JOIN currency on total_value.currency = currency.symbol`, params
-    )
+        JOIN currency on total_value.currency = currency.symbol`, params)
     return value.rows[0].total
 }
+// getPortfolio(1, 'GBP').then((data)=>console.log(data))
 
 const getStocksOwned = async (id) => {
     try{
@@ -25,7 +25,6 @@ const getStocksOwned = async (id) => {
         return 'ERROR'
     }
 }
-
 
 const assignStock = async (user, ticker, quantity) => {
     try {
@@ -38,18 +37,26 @@ const assignStock = async (user, ticker, quantity) => {
         console.log(err)
     }
 }
-
+assignStock(7,'TSLA',4)
 
 const removeStock = async (user, ticker) => {
     try {
+        params = [user, ticker.toUpperCase()]
         const res = await pool.query(`UPDATE users
-                                SET stocks_owned = stocks_owned - '${ticker}'
-                                WHERE id = ${user}`)
-        console.log(res)
+                                SET stocks_owned = stocks_owned - $2
+                                WHERE id = $1`,params)
+        if (res.rowCount < 1){
+            return('ERROR')
+        }else{
+            console.log(res.rowCount)
+            return('SUCCESS')
+        }
     } catch (err) {
         console.log(err)
     }
 }
+// assignStock(7,'tsla')
+// removeStock(7,'tsla').then((data)=>console.log(data))
 
 
 

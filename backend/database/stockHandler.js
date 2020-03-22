@@ -27,7 +27,7 @@ const insertStockIex = async (ticker, name, fund, country) => {
         }
         let dataValue = `'[]'::jsonb || jsonb_build_object('time',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',${await price})`
         let params = [ticker, name, fund, country, await price]
-        let uploaded = pgQuery(`INSERT INTO stocks (
+        let uploaded = pgQuery(`INSERT INTO stocks_legacy (
                                     ticker,
                                     name,
                                     fund,
@@ -60,7 +60,7 @@ const insertStockWtd = async (ticker, name, fund, country) => {
         }
         let params = [await stock.symbol, await stock.name, fund, country, await stock.price, await stock.currency]
 
-        let uploaded = await pgQuery(`INSERT INTO stocks (
+        let uploaded = await pgQuery(`INSERT INTO stocks_legacy (
                                     ticker,
                                     name,
                                     fund,
@@ -91,7 +91,7 @@ const updateStock = async (ticker, country) => { //only updates US stocks ATM
         let dataValue = `data || jsonb_build_object('time',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',${await price})`
 
 
-        let uploaded = pgQuery(`UPDATE stocks 
+        let uploaded = pgQuery(`UPDATE stocks_legacy
                                 SET price = ${await receivedPrice}, data = ${dataValue}
                                 WHERE ticker = '${ticker}'`) //add in response if price returns null values
     } catch (err) {
@@ -117,7 +117,7 @@ const getAllHistoricValue = async (ticker, includeTime, from, to) => {  //all pr
         }
         let response = await pgQuery(`SELECT time_series FROM (
             SELECT jsonb_array_elements(data)AS "time_series" , ticker
-            FROM stocks
+            FROM stocks_legacy
             WHERE ticker = upper('${ticker}') AND data IS NOT NULL) 
             AS "unnested"
             WHERE (time_series->> 'time')::timestamp < '${toDate}' AND (time_series->> 'time')::timestamp > '${fromDate}'`
@@ -152,7 +152,7 @@ const getTodaysValue = async (ticker, includeTime) => {  //gets all prices with 
 
         let response = await pgQuery(`SELECT time_series FROM (
             SELECT jsonb_array_elements(data)AS "time_series" , ticker
-            FROM stocks
+            FROM stocks_legacy
             WHERE ticker = upper('${ticker}') AND data IS NOT NULL) 
             AS "unnested"
             WHERE (time_series->> 'time')::timestamp < current_timestamp AND (time_series->> 'time')::timestamp > '${fromDate}'`
@@ -191,7 +191,7 @@ const getOneHistoricValue = async (ticker, includeTime, from, to) => { //gets cl
                                     SELECT time_series FROM (
                                         SELECT time_series FROM 
                                             (SELECT jsonb_array_elements(data)AS "time_series" , ticker
-                                                FROM stocks
+                                                FROM stocks_legacy
                                                 WHERE ticker = upper($1) AND data IS NOT NULL)
                                                 AS stock_data ) AS a
                                     JOIN 
@@ -199,7 +199,7 @@ const getOneHistoricValue = async (ticker, includeTime, from, to) => { //gets cl
                                         SELECT to_char(to_timestamp(stock_data.time_series->> 'time', 'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD') date, time_series 
                                         FROM (
                                             SELECT jsonb_array_elements(data)AS "time_series" , ticker
-                                            FROM stocks
+                                            FROM stocks_legacy
                                             WHERE ticker = upper($1) AND data IS NOT NULL) 
                                             AS stock_data) AS g
                                         GROUP BY date) as b
@@ -229,7 +229,7 @@ const getCurrentValue = async (ticker, includeTime) => {  //gets current value, 
     try {
         let response = await pgQuery(`SELECT time_series FROM (
             SELECT jsonb_array_elements(data)AS "time_series" , ticker
-            FROM stocks
+            FROM stocks_new
             WHERE ticker = upper('${ticker}') AND data IS NOT NULL) 
             AS "unnested"
             WHERE (time_series->> 'time')::timestamp < current_timestamp`
@@ -265,7 +265,7 @@ const updateAllWtd = async () => {//updates prices of all stocks, creates links 
     tickers = []
     
     try {
-        const response = await pgQuery('SELECT ticker, country FROM stocks')
+        const response = await pgQuery('SELECT ticker, country FROM stocks_legacy')
         await response.rows.forEach(object => {
             tickers.push(object.ticker)
         })
@@ -279,7 +279,7 @@ const updateAllWtd = async () => {//updates prices of all stocks, creates links 
                     stock.price = Math.round(stock.price) / 100
                 }
                 let dataValue = `data || jsonb_build_object('time',to_char(current_timestamp, 'YYYY-MM-DD HH24:MI:SS'),'price',${stock.price})`
-                let uploaded = pgQuery(`UPDATE stocks 
+                let uploaded = pgQuery(`UPDATE stocks_legacy 
                                         SET price = ${stock.price}, data = ${dataValue}, currency = '${stock.currency}'
                                         WHERE ticker = '${stock.symbol}'`) //safe to use without params because of restricted variables
             })

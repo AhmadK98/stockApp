@@ -27,22 +27,32 @@
     max-width: 10px !important
 }
 
-.dropdown-item:hover{
-    background-color: #6c757d;
-}
+
 
 .dropdown {
-   
     margin-top:12.5px;
-    
 }
 
 .currencyText{
-    border-left:#4e555b 2px solid;
-    padding-left:15px;
+    // border-left:#4e555b 2px solid;
+    padding-left:15px; 
+    margin-left:5px 
+}
+
+.dropdown-menu {
+    // &:hover {
+        
+    //   };
     
-    margin-left:5px
     
+}
+.dropdown-item{
+    &:hover {
+        background-color: #6c757d;
+        font-size:18px;
+        color:white !important;
+        font-weight: 300;
+    }
 }
 
 .portfolio-value {
@@ -72,7 +82,7 @@
     // border-color: black;
     margin:0px 20px 0px 0px;
     border-radius: 0px;
-    border-width: 2px;
+    // border-width:  2px;
     
     // border-style: solid;
     min-width: 200px;
@@ -142,3 +152,11 @@
     background: #4CAF50;
     cursor: pointer;
   }
+
+  .btn-sm{
+      width:60px
+  }
+
+ 
+
+ 

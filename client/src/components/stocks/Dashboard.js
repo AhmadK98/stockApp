@@ -32,39 +32,38 @@ function Dashboard() {
 
       <div className="row">
 
-        <div className="col-md-3 col-xs-1">
+        <div className="col-md-1" style={{ color: "red", marginTop:'9px', marginLeft:'15px' }}>
+          <span>Portfolio</span>
+        </div>
+
+        <div className='test col-md-7' style={{ color: "red" }} >
+          <span style={{ fontSize: '0.7em' }}>Your portfolio value: </span>
+          <div className='test2'>£1000.04</div>
+        </div>
+       
+        <div className="col-md-3" style={{marginRight: '0px' }}>
+          <CurrencyDropdown />
+        </div>
+          
+        
+   
+        <div className="col-md-3">
           <StockList />
         </div>
 
         <div className='container col-md-9 col-xs-5' style={{ background: 'none' }}>
           <div className='row'>
-            <div className='col-md-9 portfolio-value' style={{ color: "red" }}>
-              <div className='test' >
-                <span style={{ fontSize: '0.7em' }}>Your portfolio value: </span>
-                <div className='test2'>£1000.04</div>
-              </div>
-
-            </div>
-            <div className="col-md-3" style={{marginRight: '0px' }}>
-              <CurrencyDropdown />
-            </div>
+            
+            
           </div>
 
           <div className="col-md-12">
             <PortfolioGraph />
           </div>
-          {/* <row></row> */}
      
+        </div>
     </div>
-
-
-
-      </div>
-
-
-
-    </div>
-
+  </div>
   );
 }
 

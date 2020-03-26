@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './dashboard.scss';
 import CurrencyDropdown from './smallComponents/CurrencyDropdown'
 import StockList from './smallComponents/StockList'
-
 import PortfolioGraph from './smallComponents/PortfolioGraph';
+import AddStock from './smallComponents/AddStock'
 
 
 function Dashboard() {
@@ -32,7 +32,7 @@ function Dashboard() {
 
       <div className="row">
 
-        <div className="col-md-1" style={{ color: "red", marginTop:'9px', marginLeft:'15px' }}>
+        <div className="col-md-1" style={{ color: "red", marginTop:'9px', marginLeft:'15 px' }}>
           <span>Portfolio</span>
         </div>
 
@@ -52,15 +52,15 @@ function Dashboard() {
         </div>
 
         <div className='container col-md-9 col-xs-5' style={{ background: 'none' }}>
-          <div className='row'>
-            
-            
-          </div>
+          
 
           <div className="col-md-12">
             <PortfolioGraph />
           </div>
-     
+          
+          <div>
+            <AddStock />
+          </div>
         </div>
     </div>
   </div>

@@ -117,7 +117,7 @@ function PortfolioGraph() {
                     <button onClick={() => setSlideValue(366)}>1y</button>
                     <button onClick={() => setSlideValue(366*5)}>5y</button>
             </div>
-            <span style={{color:'black', background:'red'}}>{slideValue}</span>
+            
         </div>
     );
 }

@@ -14,7 +14,7 @@ const pgQuery = async (query, params) => {
     }
 }
 
-const insertStockWtdNew = async (ticker, name, fund, country) => {
+const insertStockWtd = async (ticker, name, fund, country) => {
     fund = fund || 'stock'
     country = country || 'USA'
     
@@ -49,10 +49,7 @@ const insertStockWtdNew = async (ticker, name, fund, country) => {
     }
 }
 
-
-
 // insertStockWtdNew(['AMZN'], 'AMD', 'stock', 'USA')
-
 
 const insertHistory = async (ticker) => {
 
@@ -64,19 +61,16 @@ const insertHistory = async (ticker) => {
         let price
         await Object.keys(historicalData).forEach(time => {
             
-            price = historicalData[time]
-            
-            
+            price = historicalData[time] 
             if (currency.rows[0]['currency']== 'GBP') { 
                 price.close = Math.round(price.close) / 100
-
             }
             // console.log(price.close)
             let dataValue = `data || jsonb_build_object(to_timestamp('${time}', 'YYYY-MM-DD'),${price.close})`
             query = `UPDATE stocks SET price = ${price.close}, data = ${dataValue}, currency = '${currency.rows[0]['currency']}' WHERE ticker = '${ticker}'`
             queries.push(query)
         })
-        pgQuery(queries.join(';')).then((data)=>console.log(data))
+        pgQuery(queries.join(';'))
 }
 
 
@@ -93,13 +87,14 @@ const getAllHistoricValueNew = async (ticker, from, to) => {  //all prices withi
         (SELECT data FROM stocks WHERE ticker=$1) q
         JOIN jsonb_each_text(q.data) d ON true
         WHERE key::timestamp > to_timestamp($2,'YYYY-MM-DD') and  key::timestamp < to_timestamp($3,'YYYY-MM-DD')`,params)
+        
         if (data.rows.length==0){
             return 'No history available'
         }else{
-        return data.rows
+            return data.rows
         }
-        return data
     }catch(err){   
+        
         if (err.errno !== undefined && (err.errno === 'ECONNREFUSED' || err.errno === 'ENOTFOUND')) {
             return `Can't connect to database`
         } else {

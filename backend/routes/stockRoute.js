@@ -12,8 +12,8 @@ router.get('/value/:stock', (req, res) => {
 })
 
 router.get('/search/:stock', async (req,res) => {
-    
-    response = await fetch(`https://services.dowjones.com/autocomplete/data?q=${req.params.stock}&it=fund,exchangetradedfund,stock,Index,Currency,Benchmark,Future,Bond,CryptoCurrency&count=5&need=symbol,private-company&excludeexs=XBAH,XCNQ,XTNX,XCYS,XCAI,XSTU,XBER,XHAN,XTAE,XAMM,XKAZ,XKUW,XCAS,XMUS,XKAR,DSMD,XMIC,RTSX,XSAU,XBRA,XCOL,XADS,XDFM,XCAR,XMSTAR,XOSE`,{
+    if (req.params.stock >= 1){
+    response = await fetch(`https://services.dowjones.com/autocomplete/data?q=${req.params.stock}&it=fund,exchangetradedfund,stock,Index,Currency,Benchmark,Future,Bond,CryptoCurrency&count=5&need=symbol,private-company&excludeexs=XBAH,XCNQ,XTNX,XCYS,XCAI,XSTU,XBER,XHAN,XTAE,XAMM,XKAZ,XKUW,XCAS,XMUS,XKAR,DSMD,XMIC,RTSX,XSAU,XBRA,XCOL,XADS,XDFM,XCAR,XMSTAR,XOSE,XMEX`,{
             headers: {
                 'Accept': 'application/json',
                 // 'Origin' : 'https://www.wsj.com',
@@ -29,6 +29,7 @@ router.get('/search/:stock', async (req,res) => {
     data = await response.json()
     // console.log(await Object.keys(data))
     res.send(await data.symbols)
+    }
 })
 
 module.exports = router

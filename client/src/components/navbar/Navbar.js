@@ -36,7 +36,7 @@ function Navbar() {
                 <NavLink to="/" className='home'>stockTracker</NavLink>
                 <NavLink to="/dash" className='dashboard'>Dashboard</NavLink>
                 {/* <div className */}
-                <input class="form-control col-md-3 searchBar" type="text" placeholder="Search for a stock" onChange={(e)=>searchStock(e.target.value)} ></input>
+                <input className="form-control col-md-3 searchBar" type="text" placeholder="Search for a stock" onChange={(e)=>searchStock(e.target.value)} ></input>
                 <NavLink to="/login" className='login'>Login</NavLink>
                 
 

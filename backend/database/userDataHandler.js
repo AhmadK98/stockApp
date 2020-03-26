@@ -62,7 +62,7 @@ const removeStock = async (user, ticker) => {
 
 const assignMultipleStocks = async (user, tickersQuantity) => {
     Object.keys(tickersQuantity).map(key => {
-        assignStock(1, key, tickersQuantity[key])
+        assignStock(user, key, tickersQuantity[key])
     })
 }
 

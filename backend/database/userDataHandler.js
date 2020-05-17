@@ -17,11 +17,11 @@ const getPortfolio = async (id, currency) => {
 // getPortfolio(1, 'GBP').then((data)=>console.log(data))
 
 const getStocksOwned = async (id) => {
-    try{
+    try {
         params = [id]
         let data = await pool.query(`SELECT stocks_owned FROM users where id=$1`, params)
         return data.rows[0].stocks_owned
-    }catch(err){
+    } catch (err) {
         return 'ERROR'
     }
 }
@@ -37,19 +37,19 @@ const assignStock = async (user, ticker, quantity) => {
         console.log(err)
     }
 }
-assignStock(7,'TSLA',4)
+// assignStock(7,'TSLA',4)
 
 const removeStock = async (user, ticker) => {
     try {
         params = [user, ticker.toUpperCase()]
         const res = await pool.query(`UPDATE users
                                 SET stocks_owned = stocks_owned - $2
-                                WHERE id = $1`,params)
-        if (res.rowCount < 1){
-            return('ERROR')
-        }else{
+                                WHERE id = $1`, params)
+        if (res.rowCount < 1) {
+            return ('ERROR')
+        } else {
             console.log(res.rowCount)
-            return('SUCCESS')
+            return ('SUCCESS')
         }
     } catch (err) {
         console.log(err)

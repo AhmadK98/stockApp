@@ -63,7 +63,7 @@ const wtdApi = async (tickers) => {
 }
 
 
-// wtdApi(['RBS.L' ]).then((data)=>console.log(data[0]) )
+// wtdApi(['ZM']).then((data) => console.log(data))
 
 const wtdApiCreateLinks = (tickers) => {
     const numLoops = tickers.length / 5
@@ -87,28 +87,28 @@ const wtdApiUseLinks = async (link) => {
     }
 }
 // wtdApiUseLinks(wtdApiCreateLinks(['TSCO.L'])).then((data) => console.log(data))
- 
+
 const wtdHistory = async (ticker) => {
     const url = new URL(
         "https://api.worldtradingdata.com/api/v1/history"
     );
-    
+
     let params = {
         "symbol": `${ticker}`,
         "api_token": "UsQhjjiFOodsCYt8eWSmRqY7qquA9yqlH2A9uhqv1UvotS00D6AqSeBg8VVf",
     };
-    
+
     Object.keys(params)
         .forEach(key => url.searchParams.append(key, params[key]))
 
-    try{
+    try {
         res = await fetch(url)
         // console.log(ticker)
         data = await res.json()
         // console.log(data)
         return data.history
 
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
 }
@@ -144,6 +144,6 @@ module.exports.wtdApi = wtdApi
 module.exports.getIexStock = getIexStock
 module.exports.wtdApiCreateLinks = wtdApiCreateLinks
 module.exports.wtdApiUseLinks = wtdApiUseLinks
-module.exports.wtdHistory= wtdHistory
+module.exports.wtdHistory = wtdHistory
 
 // module.exports.mkWatch = webScrape

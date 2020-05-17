@@ -263,7 +263,7 @@ const getCurrentValue = async (ticker, includeTime) => {  //gets current value, 
 
 const updateAllWtd = async () => {//updates prices of all stocks, creates links split by limit of api call and updates each stock entry with time and price
     tickers = []
-    
+
     try {
         const response = await pgQuery('SELECT ticker, country FROM stocks_legacy')
         await response.rows.forEach(object => {
@@ -294,6 +294,7 @@ const updateAllWtd = async () => {//updates prices of all stocks, creates links 
 
 
 module.exports.insertStockWtd = insertStockWtd
+module.exports.getCurrentValue = getCurrentValue
 
 // SELECT SUM(stockvalue) FROM
 // (SELECT id, ticker, value::numeric, price, price*value::numeric AS stockvalue FROM(

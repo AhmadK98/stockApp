@@ -15,14 +15,14 @@ const {
 const schema1 = new GraphQLSchema({
     query: new GraphQLObjectType({
         name: 'Ahmad',
-        fields: () =>({
+        fields: () => ({
             message: {
-            type: GraphQLString,
-            resolve: () => 'Hi'
+                type: GraphQLString,
+                resolve: () => 'Hi'
             }
         })
     })
-    
+
 })
 
 
@@ -46,10 +46,10 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-app.use('/graphql',expressGraphQL({
+app.use('/graphql', expressGraphQL({
     schema: schema1,
-    graphiql:true
-    
+    graphiql: true
+
 }))
 app.use('/stocks', stockRoute)
 app.use('/users', loginRoute)
@@ -66,7 +66,14 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.join(__dirname + '/client/build/index.html'))
 
     })
+
+
+
+
 }
+
+
+
 port = process.env.PORT || 3001
 app.listen(port, (res) => {
 

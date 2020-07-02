@@ -73,4 +73,6 @@ const getStockData = async (ticker, granularity, range, indicator) => {
 
 
 // getStockData('TSCO.L', '15m', '1d', 'open').then(data => console.log(data))
-getCurrentValue('TSCO.L').then(data => console.log(data))
+// getCurrentValue('TSCO.L').then(data => console.log(data))
+
+

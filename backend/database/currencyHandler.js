@@ -23,7 +23,7 @@ const updateCurrency = async () => {
     const res = await fetch('http://data.fixer.io/api/latest?access_key=27f41a0d85a9f902039854550b99758f&symbols=USD,AUD,CAD,GBP,PKR')
     const data = await res.json()
     Object.keys(await data.rates).forEach((symbol => {
-        pool.query(`UPDATE currency SET conversion = ${data.rates[symbol]}, time = current_time WHERE symbol = '${symbol}'`)
+        pool.query(`UPDATE currency SET conversion = ${data.rates[symbol]}, time = current_time, date = current_date  WHERE symbol = '${symbol}'`)
     }))
 }
 
@@ -42,6 +42,6 @@ const convertValue = async (ticker, currency) => {
 
 
 
-// convertValue('vusa.l', 'USD').then(res => console.log(res))
-// updateCurrency().then(()=>console.log('bye'))
+// convertValue('TSLA', 'GBP').then(res => console.log(res))
+// updateCurrency().then(() => console.log('bye'))
 

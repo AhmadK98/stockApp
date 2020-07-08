@@ -14,6 +14,7 @@ const pgQuery = async (query, params) => {
     }
 }
 
+
 const insertStockIex = async (ticker, name, fund, country) => {
     fund = fund || 'stock'
     country = country || 'USA'

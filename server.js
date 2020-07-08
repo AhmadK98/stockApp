@@ -62,7 +62,11 @@ if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
         // res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
         console.log(`Youre in production \n File path: ${path.join(__dirname + '/client/build/index.html')}`)
+<<<<<<< Updated upstream
 
+=======
+       
+>>>>>>> Stashed changes
         res.sendFile(path.join(__dirname + '/client/build/index.html'))
 
     })

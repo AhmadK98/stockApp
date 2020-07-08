@@ -3,12 +3,13 @@ const { Pool } = require('pg')
 
 
 const pool = new Pool({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
+    user: 'postgres',
+    host: 'stocks.c0dnmwizfrju.eu-west-2.rds.amazonaws.com',
     port: 5432,
-    database: "postgres"
+    database: "postgres",
+    password: 'X4nd32k1'
 })
-
-
+// const g = process.env.DB_PASSWORD
+// console.log(g)
+// pool.query('SELECT * FROM stocks').then(data => console.log(data))
 module.exports.pool = pool

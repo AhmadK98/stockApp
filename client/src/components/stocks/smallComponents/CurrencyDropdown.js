@@ -25,7 +25,7 @@ function CurrencyDropdown() {
   // console.log(clone)
   return (
 
-    <div class="dropdown" style={{ witdh: '5px' }} >
+    <div className="dropdown" style={{ witdh: '5px' }} >
       <button className="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <div className={flag + ' flag-icon h col-md'}></div>
         {/* {currency} */}
@@ -36,7 +36,7 @@ function CurrencyDropdown() {
 
           return (<a className={`dropdown-item`} key={`${flag}-object`} onClick={() => { setCurrency(flag) }}><div className={flagClasses[flag] + ' flag-icon col-md'}></div>
             <span className={`currencyText col-md`} key={`${flag}-flag`}>{flag}</span>
-            <div class="dropdown-divider"></div>
+            <div className="dropdown-divider"></div>
           </a>)
         })}
       </div>

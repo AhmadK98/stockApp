@@ -6,9 +6,11 @@ const currencyHandler = require('../database/currencyHandler')
 const userData = require('../database/userDataHandler')
 
 router.get('/portfoliovalue/:id', async (req, res) => {
-    let value = userData.getPortfolio(req.params.id, 'GBP')
-    let stocks = userData.getStocksOwned(req.params.id)
+    let value = await userData.getPortfolio(req.params.id, 'GBP') // manual change
+    let stocks = await userData.getStocksOwned(req.params.id)
+
     // .then(data => res.json(data))
+
     // .catch(err => res.json('Could not retrieve data'))
     res.json({ value: await value, stocks_owned: await stocks })
 })

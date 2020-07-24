@@ -21,7 +21,7 @@ const yahooAPI = async (link) => {
 
 const yahooLink = (ticker, granularity, range) => {
 	validRanges = ["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"];
-	validGranularity = ["2m", "15m", "30m", "1h", "1d", "1wk", "1mo"];
+	validGranularity = ["1m", "2m", "15m", "30m", "1h", "1d", "1wk", "1mo"];
 
 	if (validRanges.includes(range) == false) {
 		throw new Error(`${range} is not a valid range: ${validRanges}`);
@@ -69,7 +69,9 @@ const getStockData = async (ticker, granularity, range, indicator, country) => {
 		// console.log(data)
 
 		const timeStampData = unixConvert(await data[0]["timestamp"]);
-
+		// console.log(data[0]);
+		// console.log(timeStampData);
+		// console.log(data);
 		if (data[0]["meta"]["currency"] == "GBp") {
 			data[0]["meta"]["currency"] = "GBP";
 			data[0]["indicators"]["quote"][0][indicator] = data[0]["indicators"]["quote"][0][indicator].map((x) => x / 100);
@@ -78,9 +80,12 @@ const getStockData = async (ticker, granularity, range, indicator, country) => {
 
 		const valueData = {};
 		for (i = 0; i < timeStampData.length; i++) {
-			if (data[0]["indicators"]["quote"][0][indicator][i] == null) {
+			// console.log(data[0]['indicators']['quote'])
+			if (data[0]["indicators"]["quote"][0][indicator][i] == null || data[0]["indicators"]["quote"][0][indicator][i] == 0) {
+				// console.log("43534asdasdas");
 				data[0]["indicators"]["quote"][0][indicator][i] = data[0]["indicators"]["quote"][0][indicator][i - 1];
 			}
+
 			valueData[timeStampData[i]] = await data[0]["indicators"]["quote"][0][indicator][i];
 		}
 		valueData[unixConvert(await data[0]["meta"]["regularMarketTime"])] = await data[0]["meta"]["regularMarketPrice"];
@@ -89,7 +94,7 @@ const getStockData = async (ticker, granularity, range, indicator, country) => {
 			name: tickerData["symbols"][tickerChoice]["company"],
 			ticker: await data[0]["meta"]["symbol"],
 			country: tickerData["symbols"][tickerChoice]["country"],
-			currentValue: await data[0]["meta"]["regularMarketPrice"].toFixed(2),
+			currentValue: await data[0]["meta"]["regularMarketPrice"].toFixed(3),
 			type: tickerData["symbols"][tickerChoice]["type"],
 			currency: data[0]["meta"]["currency"],
 			valueData: valueData,
@@ -100,7 +105,7 @@ const getStockData = async (ticker, granularity, range, indicator, country) => {
 	}
 };
 
-// getStockData("TSLA", "1d", "1d", "close").then((data) => console.log(data));
-// yahooAPI(yahooLink("TSLA", "2m", "1d")).then((data) => console.log(data));
+// getStockData("JD", "1m", "5d", "close", "UK").then((data) => console.dir(data));
+// yahooAPI(yahooLink("JD.L", "1m", "1d")).then((data) => console.log(data[0]["indicators"]["quote"][0]["close"]));
 
 module.exports.getStockData = getStockData;

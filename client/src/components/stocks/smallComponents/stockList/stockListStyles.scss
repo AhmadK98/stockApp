@@ -1,0 +1,276 @@
+.stockList {
+	min-width: 350px;
+	position: relative;
+	// position: absolute;
+	left: 10px; // left:1000px
+}
+
+.stockCard {
+	position: relative;
+
+	background-color: none;
+	// he
+	margin: 0px 20px 0px 0px;
+	border-radius: 0px;
+	transform: scale(1);
+	// border-width:  2px;
+
+	// border-style: solid;
+	min-width: 350.75px;
+	max-width: 355.75px;
+	width: 100%;
+}
+
+.filterStockSearch {
+	position: relative;
+	// align-items: left;
+	display: block;
+	// left:-40px;
+	min-width: 350px;
+	max-width: 350px;
+}
+
+.stockObject {
+	font-family: arial, sans-serif;
+	background-color: white;
+
+	margin-top: 10px;
+	// transform: scale(1);
+}
+
+.card {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+
+	transition: min-height 0.3s ease-in-out;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+	background-color: #d5d4cf;
+	max-height: 250px;
+	//  transform: rotateY( -90deg);
+}
+
+.card:hover .positive {
+	animation-duration: 1s;
+}
+
+.card:hover .negative {
+	animation-duration: 1s;
+}
+
+.stockPercent {
+	position: absolute;
+	font-size: 0.6em;
+	bottom: -0.6em;
+	left: 0px;
+	font-weight: bold;
+	// color: blue;
+}
+
+.positive {
+	animation-name: positive-animate;
+	animation-duration: 10s;
+	animation-iteration-count: infinite;
+	color: #3e9e3e;
+}
+
+.negative {
+	animation-name: negative-animate;
+	animation-duration: 10s;
+	animation-iteration-count: infinite;
+	color: #bb2c3a;
+}
+
+@keyframes positive-animate {
+	0% {
+		color: #3e9e3e;
+	}
+
+	50% {
+		color: #2d812d;
+	}
+	100% {
+		color: #3e9e3e;
+	}
+}
+
+@keyframes negative-animate {
+	0% {
+		color: #bb2c3a;
+	}
+
+	50% {
+		color: #972b35;
+	}
+	100% {
+		color: #bb2c3a;
+	}
+}
+
+.valueDifference {
+	position: absolute;
+	font-size: 0.66em;
+	bottom: 0.25em;
+	margin-left: 3px;
+	// right:0px;
+	font-weight: bold;
+	// font-weight: bold;
+	// color: blue;
+}
+
+.currencySymbol {
+	position: absolute;
+	font-size: 0.5em;
+	font-weight: bold;
+	top: 0.85em;
+	left: -6.5px;
+	margin-bottom: 30px;
+	// color: blue;
+}
+
+.amount-held {
+	// position:relative;
+	// font-size: 0.6em;
+	// bottom:0.8em;
+	// left:0.1%;
+	// color:red;
+	// float:right;
+}
+.totalValue {
+	// position:relative;
+	// font-size: 0.6em;
+	// bottom:0.8em;
+	// left:0.1%;
+	// color:red;
+	// float:right;
+}
+
+.row1 {
+	height: 50px;
+}
+
+.img {
+	top: 35px;
+	max-width: 80px;
+	max-height: 53.75px;
+	border-radius: 50%;
+}
+
+.topRow {
+	position: relative;
+	top: 10px;
+}
+
+.stockValue {
+	font-size: 1.5em;
+	min-width: 80px;
+	// font-weight: bold;
+
+	// float:right;
+}
+
+.stockContent {
+	max-width: 270px;
+}
+
+.stockName {
+	text-align: left;
+	top: 15px;
+	// margin-right: 3px;
+	font-family: arial, sans-serif;
+	font-size: 19px !important;
+	font-weight: 0;
+	position: relative;
+	left: 8px;
+}
+
+.bottomRow {
+	font-size: 20px;
+	margin-top: 10px;
+	margin-left: -6px;
+	font-weight: 0;
+}
+
+.stockValueConvert {
+	position: absolute;
+	// font-size: 0.6em;
+	// bottom: -0em;
+	bottom: -0em;
+	font-weight: 0 !important;
+	color: black;
+}
+
+.sort {
+	background: white;
+	color: black;
+	font-size: 17px;
+	display: block;
+	text-align: left;
+	margin-left: 5px;
+}
+
+.sortItem::-moz-selection {
+	background: transparent;
+}
+.sortItem::selection {
+	background: transparent;
+}
+// .sort:hover{
+// 	box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2);
+// }
+
+.sortItem {
+	padding: 1px 1px 1px 1px;
+	margin-right: 10px;
+
+	// text-shadow: 2px 2px #FF0000;
+}
+
+.sortItem:hover {
+	// text-shadow: -16px 6px 15px 0 ced0d3;
+	text-shadow: 1px 2px 3px #ced0d3;
+	cursor: pointer;
+	// text-decoration: underline;
+}
+
+.arrow {
+	position: relative;
+	top: -2px;
+	border: solid black;
+	border-width: 0 0.1px 0.1px 0;
+	margin-left: 3px;
+	display: inline-block;
+	padding: 2px;
+	pointer-events: none;
+	// display:none;
+}
+
+.arrowShow {
+	position: relative;
+	top: -2px;
+	border: solid black;
+	border-width: 0 0.1px 0.1px 0;
+	margin-left: 3px;
+	display: inline-block;
+	padding: 2px;
+	pointer-events: none;
+	// display:none;
+}
+
+.up {
+	transform: rotate(-135deg);
+	-webkit-transform: rotate(-135deg);
+	display: "";
+}
+
+.down {
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	display: "";
+}
+
+.arrow:focus {
+	background-color: black;
+}

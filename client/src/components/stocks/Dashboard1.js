@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./dashboard.scss";
 import CurrencyDropdown from "./smallComponents/CurrencyDropdown";
-import StockList from "./smallComponents/StockList";
+import StockList from "./smallComponents/stockList/StockList";
 import PortfolioGraph from "./smallComponents/PortfolioGraph";
 import AddStock from "./smallComponents/AddStock";
 

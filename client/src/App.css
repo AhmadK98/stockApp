@@ -1,11 +1,13 @@
 .App {
   text-align: center;
   overflow: hidden;
+  font-family: Lato, sans-serif;
 }
 
 
 .App-header {
-  background-color: #ffffff;
+  font-family: Lato, sans-serif;
+  background-color: white;
   max-height: 100vh;
   /* display: flex; */
   /* flex-direction: column; */

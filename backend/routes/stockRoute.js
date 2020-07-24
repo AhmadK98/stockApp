@@ -19,7 +19,17 @@ router.get("/search/:stock", async (req, res) => {
 		);
 		let data = await request.json();
 		res.json(data);
+	}else{
+		res.json({none:'none'})
 	}
+});
+
+
+router.get("/history/:stock", (req, res) => {
+	// let includeTime = req.query.includeTime ? true : null;
+	stockHandler.getAllHistoricValue(req.params.stock)
+		.then((data) => res.json(data))
+		.catch((err) => res.json("Could not retrieve data"));
 });
 
 module.exports = router;

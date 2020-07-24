@@ -4,20 +4,13 @@ import LoginForm from "./components/login/LoginForm";
 import Loading from "./components/loading/Loading";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./components/home/Home";
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	// Link,
-	Redirect,
-} from "react-router-dom";
-
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import "./App.css";
 
 function App() {
-	const [logged, setLogged] = useState(true);
+	const [logged, setLogged] = useState(null);
 	const [loaded, setLoaded] = useState(false);
-	// const [serve, setServe] = useState()
+	const [serve, setServe] = useState();
 
 	let initialize = async () => {
 		try {
@@ -33,34 +26,28 @@ function App() {
 	};
 
 	useEffect(() => {
-		console.log("appRerender");
 		const interval = setInterval(() => {
 			initialize().then((data) => {
-				setLogged(data === "true");
+				setLogged(data == "true");
 				setLoaded(true);
 				clearInterval(interval);
 			});
 		}, 1000);
 	}, []);
 
-	// useEffect(()=>{
-
-	//   if (logged === true) {
-	//     setServe(<StockGetter />)
-	//   }else{
-	//     setServe(<LoginForm />)
-	//   }
-
-	// },[logged])
+	// useEffect(() => {
+	// 	if (logged == true) {
+	// 		setServe(<Home />);
+	// 	} else {
+	// 		setServe(<LoginForm />);
+	// 	}
+	// }, [logged]);
 
 	const PrivateRoute = ({ component: Component, ...rest }) => (
-		initialize().then((data) => setLogged(data === "true")),
-		(
-			<Route
-				{...rest}
-				render={(props) => (logged === true ? <Component {...props} /> : <Redirect to="/login" />)}
-			/>
-		)
+		
+		initialize().then((data) => setLogged(data == "true")),
+	
+		(<Route {...rest} render={(props) => (logged == true ? <Component {...props} /> : <Redirect to="/login" />)} />)
 	);
 
 	if (3 == 5) {
@@ -77,7 +64,7 @@ function App() {
 			<div className="App">
 				<header className="App-header">
 					<Router>
-						<Navbar />
+						<Navbar loggedIn={logged}/>
 						<Switch>
 							<Route exact path="/" component={Home} />
 							<Route path="/login" component={LoginForm} />

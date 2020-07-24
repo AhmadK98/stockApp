@@ -17,16 +17,45 @@ const getPortfolio = async (id, currency) => {
 };
 // getPortfolio(1, 'GBP').then((data)=>console.log(data))
 
-const getStocksOwned = async (id) => {
+// const getStocksOwned = async (id) => {
+// 	try {
+// 		params = [id];
+// 		let data = await pool.query(
+// 			`SELECT user_table.ticker, name, amount, price, currency, latest_time FROM
+// 		(SELECT d.key ticker, d.value amount from
+//         (SELECT stocks_owned FROM users WHERE id = $1) q
+//         LEFT JOIN jsonb_each_text(q.stocks_owned) d ON true ) as user_table
+// 		JOIN (SELECT * from stocks) as stock_table
+// 		ON user_table.ticker = stock_table.ticker`,
+// 			params
+// 		);
+// 		return data.rows;
+// 	} catch (err) {
+// 		return "ERROR";
+// 	}
+// };
+
+const getStocksOwned = async (id, currency) => {
 	try {
-		params = [id];
+		params = [id, currency];
 		let data = await pool.query(
-			`SELECT user_table.ticker, name, amount, price, currency, latest_time FROM
-		(SELECT d.key ticker, d.value amount from
-        (SELECT stocks_owned FROM users WHERE id = $1) q
-        LEFT JOIN jsonb_each_text(q.stocks_owned) d ON true ) as user_table
-		JOIN (SELECT * from stocks) as stock_table 
-		ON user_table.ticker = stock_table.ticker`,
+			`SELECT user_table.ticker, name, amount, price as original_price,(SELECT jsonb_agg(price) FROM (SELECT jsonb_build_object(d.key, d.value) price from
+			(SELECT data, currency, name FROM stocks WHERE ticker= user_table.ticker) q
+			JOIN jsonb_each_text(q.data) d ON true 
+			WHERE d.key::timestamp::time > (
+											CASE WHEN currency='USD' THEN time '19:59'
+													WHEN currency='GBP' THEN time '15:30'
+										   END)
+				 ORDER by d.key DESC LIMIT 2) aa) prev_close,
+			ROUND(((price * (select conversion from currency where symbol = $2))/(select conversion from currency where symbol = currency))::numeric,5) price, (SELECT symbol FROM currency WHERE symbol = $2) currency, currency as original_currency, latest_time  FROM
+				(SELECT d.key ticker, d.value amount from
+				(SELECT stocks_owned FROM users WHERE id = $1) q
+				 
+				LEFT JOIN jsonb_each_text(q.stocks_owned) d ON true ) as user_table
+				
+				JOIN (SELECT * from stocks) as stock_table 
+				
+				ON user_table.ticker = stock_table.ticker`,
 			params
 		);
 		return data.rows;
@@ -34,6 +63,8 @@ const getStocksOwned = async (id) => {
 		return "ERROR";
 	}
 };
+
+// getStocksOwnedNew(1, "GBP").then((data) => console.log(data));
 
 const assignStock = async (user, ticker, quantity) => {
 	try {
@@ -48,7 +79,7 @@ const assignStock = async (user, ticker, quantity) => {
 		console.log(err);
 	}
 };
-// assignStock(7,'TSLA',4)
+assignStock(1,'AMZN',100)
 
 const removeStock = async (user, ticker) => {
 	try {
@@ -83,6 +114,6 @@ const assignMultipleStocks = async (user, tickersQuantity) => {
 // getValuesOfStocksOwned(["TSLA", "MSFT"]);
 // getStocksOwned(1).then((data) => console.log(data));
 
-// getStocksOwned(1).then((data) => console.log(data["JD.L"]));
+// getStocksOwned(1).then((data) => console.log(data));
 module.exports.getPortfolio = getPortfolio;
 module.exports.getStocksOwned = getStocksOwned;

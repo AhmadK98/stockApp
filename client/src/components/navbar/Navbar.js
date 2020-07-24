@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './navbar.scss';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
+    // BrowserRouter as Router,
+    // Switch,
+    // Route,
     NavLink,
-    useHistory
+    // useHistory
 } from "react-router-dom";
 
-import StockGetter from '../stocks/Dashboard'
+// import StockGetter from '../stocks/Dashboard'
 
 
 
-function Navbar() {
+function Navbar(props) {
    
     // const [search, setSearch] = useState('d')
 
@@ -37,7 +37,7 @@ function Navbar() {
                 <NavLink to="/dash" className='dashboard'>Dashboard</NavLink>
                 {/* <div className */}
                 <input className="form-control col-md-3 searchBar" type="text" placeholder="Search for a stock" onChange={(e)=>searchStock(e.target.value)} ></input>
-                <NavLink to="/login" className='login'>Login</NavLink>
+                <NavLink to="/login" className='login'>{(props.loggedIn ? 'Login':'Logout')}</NavLink>
                 
 
             </div>

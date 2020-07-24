@@ -68,5 +68,5 @@ const marketHours = () => {
 
 	return data;
 };
-
+console.log(marketHours());
 module.exports.marketHours = marketHours;

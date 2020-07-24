@@ -1,17 +1,4 @@
-// .s {
-//     background-color: black;
-    
-// }
 
-// .g {
-//     background-color: white;
-//     height:30vh;
-//     border-color: black;
-//     margin:15px 0px 0px 20px;
-//     border-radius: 4px;
-//     border-width: 2px;
-//     border-style: solid;
-// }
 
 
 .btn {
@@ -76,53 +63,8 @@
    
 }
 
-.stockCard {
-    background-color: none;
-    // height:30vh;
-    // border-color: black;
-    margin:0px 20px 0px 0px;
-    border-radius: 0px;
-    // border-width:  2px;
-    
-    // border-style: solid;
-    min-width: 200px;
-    width:90%;
-}
 
-.stockObject{
-    position:relative;
-    text-align:left;
-    margin-left:15px;
-    padding-bottom: 10px;
-    border-bottom: solid black 1px
-    
-}
 
-.stockPercent{
-    position:absolute;
-    font-size: 0.6em;
-    top:1.75em;
-    left:0.1%;
-    color:red
-}
-
-.amount-held{
-    position:relative;
-    font-size: 0.6em;
-    bottom:0.8em;
-    // left:0.1%;
-    // color:red;
-    float:right;
-}
-
-.total-value{
-    position:relative;
-    // font-size: 0.6em;
-    // bottom:0.8em;
-    // left:0.1%;
-    // color:red;
-    float:right;
-}
 
 .slider {
     -webkit-appearance: none;

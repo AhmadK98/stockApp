@@ -1,21 +1,29 @@
-const express = require('express')
-const router = express.Router()
-const stockHandler = require('../database/stockHandler')
-const stockHandlerNew = require('../database/stockHandlerNew')
-const currencyHandler = require('../database/currencyHandler')
-const userData = require('../database/userDataHandler')
+const express = require("express");
+const router = express.Router();
 
-router.get('/portfoliovalue/:id', async (req, res) => {
-    let value = await userData.getPortfolio(req.params.id, 'GBP') // manual change
-    let stocks = await userData.getStocksOwned(req.params.id)
+const stockHandler = require("../database/stockHandler");
+const currencyHandler = require("../database/currencyHandler");
+const userData = require("../database/userDataHandler");
+const fetch = require("node-fetch");
 
-    // .then(data => res.json(data))
+router.get("/portfoliovalue/:id?", async (req, res) => {
+	let value = await userData.getPortfolio(req.params.id, req.query.currency); // manual change
+	let stocks = await userData.getStocksOwned(req.params.id, req.query.currency);
+	
 
-    // .catch(err => res.json('Could not retrieve data'))
-    res.json({ value: await value, stocks_owned: await stocks })
-})
+	// .then(data => res.json(data))
 
+	// .catch(err => res.json('Could not retrieve data'))
+	res.json({ value: await value, stocksOwned: await stocks });
+});
 
+router.get("/currency", async (req, res) => {
+	let data = await currencyHandler.currencyInfo();
 
+	// .then(data => res.json(data))
 
-module.exports = router
+	// .catch(err => res.json('Could not retrieve data'))
+	res.json(await data);
+});
+
+module.exports = router;

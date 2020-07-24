@@ -110,7 +110,7 @@ const assignMultipleStocks = async (user, tickersQuantity) => {
 // const getValuesOfStocksOwned = async (stocks) => {
 // 	console.log(`OR ticker = '${stocks}'`);
 // };
-
+// pool.query('SELECT').then(data=>console.log(data))
 // getValuesOfStocksOwned(["TSLA", "MSFT"]);
 // getStocksOwned(1).then((data) => console.log(data));
 

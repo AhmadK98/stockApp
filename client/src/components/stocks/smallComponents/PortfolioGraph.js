@@ -688,6 +688,10 @@ function PortfolioGraph() {
 	const selectedTicker = useSelector((state)=> state.selectedTicker)
 
 	useEffect(() => {
+		if (window.myChart.id !== "myChart") {
+			window.myChart.destroy();
+		}
+		console.log(window)
 		dispatch(async () => {
 			let res = await fetch(`/stocks/history/${selectedTicker}`);
 			let data = await res.json();
@@ -729,15 +733,13 @@ function PortfolioGraph() {
 
 	return (
 		<div>
+			<span style={{color:'blue'}}>g</span>
 			<div style={{ marginRight: "20px" }}>
 				<canvas id="myChart" height="900" width="2500"></canvas>
-				{/* <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
-                </canvas> */}
+				
 			</div>
-			{/* <div className="sliderContainer">
-                <input type="range" min="1" max="100" defaultValue={slideValue} class="slider"  id="myRange" onChange={e => setSlideValue(e.target.value)} ></input>
-                
-            </div> */}
+			<div className="lds-default" style={{display:'none'}}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			
 			<div className="selectRange">
 				<button onClick={() => setSlideValue("1d")}>1d</button>
 				<button onClick={() => setSlideValue("5d")}>1w</button>

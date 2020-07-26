@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "../dashboard.scss";
 import Chart from "chart.js";
-import * as ChartAnnotation from "chartjs-plugin-annotation";
+// import * as ChartAnnotation from "chartjs-plugin-annotation";
 import { setStockData } from "../../../actions";
 
 const getWeek = (date) => {

@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/AhmadK98/stockApp#readme",
   "dependencies": {
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.0",
     "chartjs": "^0.3.24",
     "concurrently": "^5.2.0",
     "cookie": "^0.4.1",
